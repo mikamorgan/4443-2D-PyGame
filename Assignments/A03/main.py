@@ -19,6 +19,6 @@ if __name__ == "__main__":
     # Set title of window
     root.title("Hello World!")
     # Instantiate HelloWorldFrame object
-    hello_frame = HelloWorldFrame(root,"Nikola Tesla")
+    hello_frame = HelloWorldFrame(root,"Mika Morgan")
     # Start GUI
     hello_frame.mainloop()
