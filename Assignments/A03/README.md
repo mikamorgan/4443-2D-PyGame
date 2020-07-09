@@ -10,7 +10,7 @@ work correctly on your environment.
 
 |   #   | File            | Description                                        |
 | :---: | --------------- | -------------------------------------------------- |
-|   1   | main.py         | Main driver of my project that launches game.      |
+|   1   | [main.py](main.py)         | Main driver of my project that launches game.      |
 
 
 ### Instructions
