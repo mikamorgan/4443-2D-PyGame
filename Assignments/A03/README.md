@@ -1,2 +1,18 @@
-Instructions to run main program:
-python main.py
+## A03 - Run a Python file
+### Mika Morgan
+### Description:
+
+This is a small program that uses tkinter to spawn a GUI window displaying the message
+"Hello World! My name is Mika Morgan!" This program is to test that Python and tkinter
+work correctly on your environment.
+
+### Files
+
+|   #   | File            | Description                                        |
+| :---: | --------------- | -------------------------------------------------- |
+|   1   | main.py         | Main driver of my project that launches game.      |
+
+
+### Instructions
+
+- python main.py
