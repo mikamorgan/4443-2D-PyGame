@@ -13,10 +13,19 @@ class PlayerInfoFrame(tk.Frame):
 
         # Create text box with player information
         row = 0
+        col = 0
 
-        for info in player_dictionary:
-            lab = tk.Label(self, text=f"{info} \t: {info}")
-            lab.grid(row=row, column=0)
+        for key in player_dictionary:
+            if type(player_dictionary[key]) is list:
+                lab = tk.Label(self, text=f"{key}\t:")
+                lab.grid(row=row, column=col)
+                for value in player_dictionary[key]:
+                    col += 1
+                    lab = tk.Label(self, text=f"{value}, ")
+                    lab.grid(row=row, column=col)
+            else:
+                lab = tk.Label(self, text=f"{key}\t:\t{player_dictionary[key]}")
+                lab.grid(row=row, column=col)
 
             row += 1
 

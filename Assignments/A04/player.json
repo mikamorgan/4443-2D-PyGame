@@ -1,11 +1,11 @@
 {
-    "fname":"Mika",
-    "lname":"Morgan",
-    "rank": 300,
-    "screen_name":"cookie_monster",
-    "speed":90,
-    "power":70,
-    "health":100,
-    "coin":20000,
-    "available-boosts": ["stealth","shield","bribe"]
+    "First":"Mika",
+    "Last":"Morgan",
+    "Rank":300,
+    "Screen_name":"cookie_monster",
+    "Speed":90,
+    "Power":70,
+    "Health":100,
+    "Coin":20000,
+    "Available_boosts": ["stealth","shield","bribe"]
 }
