@@ -16,7 +16,7 @@ This is a small Python program that reads and displays player information from a
 ### Instructions
 
 - Make sure you install Python on your device. Instructions and download can be found [here](https://www.python.org/downloads/). I used version Python 3.7.2, but there are updated versions available.
-- The program expects one parameter in the command line when you run the program, the name of the JSON file with the player information stored.
+- The program expects one parameter in the command line when you ran, the name of the JSON file with the player information stored.
 
 - Example Command:
     - `python <code_name> <input_JSON_file>`

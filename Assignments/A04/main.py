@@ -16,15 +16,17 @@ class PlayerInfoFrame(tk.Frame):
         col = 0
 
         for key in player_dictionary:
+            pad = " "* (30 - len(key))
+
             if type(player_dictionary[key]) is list:
-                lab = tk.Label(self, text=f"{key}\t:")
+                lab = tk.Label(self, text=f"{key}{pad}:")
                 lab.grid(row=row, column=col)
                 for value in player_dictionary[key]:
                     col += 1
                     lab = tk.Label(self, text=f"{value}, ")
                     lab.grid(row=row, column=col)
             else:
-                lab = tk.Label(self, text=f"{key}\t:\t{player_dictionary[key]}")
+                lab = tk.Label(self, text=f"{key}{pad}:\t{player_dictionary[key]}")
                 lab.grid(row=row, column=col)
 
             row += 1
