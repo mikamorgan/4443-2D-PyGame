@@ -7,9 +7,6 @@ from tkinter.font import Font
 # GUI window is a subclass of the basic tkinter Frame object
 class PlayerInfoFrame(tk.Frame):
     def __init__(self, master,player_dictionary):
-        # Choose your font
-        #appfont = font.Font(family='Courier New', size=12, weight='bold')
-        
         # Call superclass constructor
         tk.Frame.__init__(self, master)
         
@@ -20,6 +17,10 @@ class PlayerInfoFrame(tk.Frame):
         row = 0
         col = 1
 
+        # All player data in the JSON file has been loaded into a Python dictionary
+        # Traverse through the dictionary and display each key-value pair in the
+        # GUI window, using tKinter. Separate into 3 parts and use sticky=tk.W to
+        # keep the information left aligned and printed in even columns
         for key in player_dictionary:
 
             if type(player_dictionary[key]) is list:
