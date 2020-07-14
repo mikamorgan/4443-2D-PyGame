@@ -55,6 +55,8 @@ def main(**kwargs):
 
     player = pygame.image.load(kwargs['img_path'])
     player = pygame.transform.scale(player, (70, 70))
+    p_x = 100
+    p_y = 100
 
     # sets the window title
     pygame.display.set_caption(kwargs['title'])
@@ -72,8 +74,20 @@ def main(**kwargs):
                 running = False
 
         # Draw / render
-        screen.blit(player, (100, 100))
+        screen.blit(player, (p_x, p_y))
         pygame.display.flip()
+
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    p_x -= 1
+                if event.key == pygame.K_RIGHT:
+                    p_x += 1
+                if event.key == pygame.K_UP:
+                    p_y += 1
+                if event.key == pygame.K_DOWN:
+                    p_y += 1
 
     # Done! Time to quit.
     pygame.quit()
