@@ -54,6 +54,7 @@ def main(**kwargs):
     y = int(kwargs['height'], 10)
 
     player = pygame.image.load(kwargs['img_path'])
+    player = pygame.transform.scale(player, (70, 70))
 
     # sets the window title
     pygame.display.set_caption(kwargs['title'])
@@ -71,7 +72,6 @@ def main(**kwargs):
                 running = False
 
         # Draw / render
-        #screen.fill(0,0,0)
         screen.blit(player, (100, 100))
         pygame.display.flip()
 
