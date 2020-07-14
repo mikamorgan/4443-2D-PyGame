@@ -72,22 +72,19 @@ def main(**kwargs):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
-        # Draw / render
-        screen.blit(player, (p_x, p_y))
-        pygame.display.flip()
-
-        events = pygame.event.get()
-        for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     p_x -= 5
                 if event.key == pygame.K_RIGHT:
                     p_x += 5
                 if event.key == pygame.K_UP:
-                    p_y += 5
-                if event.key == pygame.K_DOWN:
                     p_y -= 5
+                if event.key == pygame.K_DOWN:
+                    p_y += 5
+
+        # Draw / render
+        screen.blit(player, (p_x, p_y))
+        pygame.display.flip()
 
     # Done! Time to quit.
     pygame.quit()
