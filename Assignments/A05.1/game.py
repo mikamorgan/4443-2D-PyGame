@@ -34,6 +34,12 @@ def usage():
     print("Example:\n\n\t python basic.py title='Game 1' img_path=./sprite.png width=640 height=480 \n")
     sys.exit()
 
+colors = {
+    'magenta':(255, 0, 255, 100),
+    'cyan':(0, 255, 255, 100),
+    'background':(255,255,255,100)
+}
+
 #class Player(pygame.sprite.Sprite):
     #x = int(kwargs['width'], 10)
     #y = int(kwargs['height'], 10)
@@ -45,6 +51,17 @@ def usage():
    #     self.rect  = self.image.get_rect()
         #self.rect.center = (x / 2, y / 2)
 
+class Background(pygame.sprite.Sprite):
+    def __init__(self, image_file, location):
+        x = int(kwargs['width'], 10)
+        y = int(kwargs['height'], 10)
+        
+        pygame.sprite.Sprite.__init__(self)  #call Sprite initializer
+        self.image = pygame.image.load(image_file)
+        self.image = pygame.transform.scale(self.image, (x, y))
+        self.rect = self.image.get_rect()
+        self.rect.left, self.rect.top = location
+
 def main(**kwargs):
     pygame.init()
 
@@ -52,6 +69,8 @@ def main(**kwargs):
     #Need to convert values from string to int, specify using base 10
     x = int(kwargs['width'], 10)
     y = int(kwargs['height'], 10)
+
+    BackGround = Background('bg.jpg', [0,0])
 
     player = pygame.image.load(kwargs['img_path'])
     player = pygame.transform.scale(player, (70, 70))
@@ -67,6 +86,7 @@ def main(**kwargs):
     # Run until the user asks to quit
     running = True
     while running:
+        screen.fill(colors['background'])
 
         # Did the user click the window close button?
         for event in pygame.event.get():
@@ -83,6 +103,7 @@ def main(**kwargs):
                     p_y += 5
 
         # Draw / render
+        screen.blit(BackGround.image, BackGround.rect)
         screen.blit(player, (p_x, p_y))
         pygame.display.flip()
 
