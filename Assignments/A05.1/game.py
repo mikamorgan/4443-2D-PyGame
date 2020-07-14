@@ -81,13 +81,13 @@ def main(**kwargs):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    p_x -= 1
+                    p_x -= 5
                 if event.key == pygame.K_RIGHT:
-                    p_x += 1
+                    p_x += 5
                 if event.key == pygame.K_UP:
-                    p_y += 1
+                    p_y += 5
                 if event.key == pygame.K_DOWN:
-                    p_y += 1
+                    p_y -= 5
 
     # Done! Time to quit.
     pygame.quit()
