@@ -30,8 +30,8 @@ def mykwargs(argv):
 def usage():
     # Params in square brackets are optional
     # The kwargs function script needs key=value to NOT have spaces
-    print("Usage: python basic.py title=string img_path=string width=int height=int [jsonfile=string]")
-    print("Example:\n\n\t python basic.py title='Game 1' img_path=./sprite.png width=640 height=480 \n")
+    print("Usage: python basic.py title=string img_path=string img_path=string width=int height=int [jsonfile=string]")
+    print("Example:\n\n\t python basic.py title='Game 1' bg_path=bg.jpg img_path=sprite.png width=640 height=480 \n")
     sys.exit()
 
 colors = {
@@ -70,7 +70,7 @@ def main(**kwargs):
     x = int(kwargs['width'], 10)
     y = int(kwargs['height'], 10)
 
-    BackGround = Background('bg.jpg', [0,0])
+    BackGround = Background(kwargs['bg_path'], [0,0])
 
     player = pygame.image.load(kwargs['img_path'])
     player = pygame.transform.scale(player, (70, 70))
@@ -90,7 +90,6 @@ def main(**kwargs):
     # Run until the user asks to quit
     running = True
     while running:
-        screen.fill(colors['background'])
 
         # Did the user click the window close button?
         for event in pygame.event.get():
@@ -116,12 +115,12 @@ def main(**kwargs):
 
 if __name__=='__main__':
     """
-    This example has 4 required parameters, so after stripping the file name out of
-    the list argv, I can test the len() of argv to see if it has 4 params in it.
+    This example has 5 required parameters, so after stripping the file name out of
+    the list argv, I can test the len() of argv to see if it has 5 params in it.
     """
     argv = sys.argv[1:]
 
-    if len(argv) < 4:
+    if len(argv) < 5:
         print(len(argv))
         usage()
 
