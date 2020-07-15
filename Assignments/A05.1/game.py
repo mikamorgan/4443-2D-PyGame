@@ -74,8 +74,12 @@ def main(**kwargs):
 
     player = pygame.image.load(kwargs['img_path'])
     player = pygame.transform.scale(player, (70, 70))
-    p_x = 100
-    p_y = 100
+
+    #p_w = player.get_width()
+    #p_h = player.get_height()
+
+    p_x = x / 2 - player.get_width()
+    p_y = y / 2 - player.get_height()
 
     # sets the window title
     pygame.display.set_caption(kwargs['title'])

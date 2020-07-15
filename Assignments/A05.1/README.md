@@ -11,7 +11,7 @@ The player will appear as the image passed in during execution.
 | :---: | --------------- | -------------------------------------------------- |
 |   1   | [game.py](game.py)         | Main driver of my project that launches game.      |
 |   2   | [bg.jpg](bg.jpg)           | Galaxy image used as possible background (but user can pass in a different file).     |
-|   3   | [sprite.png](sprite.png)         | Possible player image (but user can pass in a different file).      |
+|   3   | [sprite.png](sprite.png)         | Planet image used as possible player (but user can pass in a different file).      |
 
 
 ### Instructions
