@@ -2,7 +2,7 @@
 ### Mika Morgan
 ### Description:
 
-This is a Python game similar to agar.io. This first part sets up the game window based on user input passed in as command line arguments. The user can designate the window title, screen size, background image, and sprite image for the player. A GUI window will spawn to the specified size and the specified background image will fill the screen (scaled to fit). A single player will spawn on the middle of the window, using the image passed in. The sample background and player image used in the example commands should display:
+This is a Python game similar to agar.io. This first part sets up the game window based on user input passed in as command line arguments. The user can designate the window title, screen size, background image, and sprite image for the player. A GUI window will spawn to the specified size and the specified background image will fill the screen (scaled to fit). A single player will spawn in the middle of the window, using the image passed in. The sample background and player image used in the example commands should display:
 
 <img src="setup_example.png" width="400">
 
@@ -20,6 +20,9 @@ Example of player movement using the arrow keys:
 |   1   | [game.py](game.py)         | Main driver of my project that launches game.      |
 |   2   | [bg.jpg](bg.jpg)           | Galaxy image used as possible background (but user can pass in a different file).     |
 |   3   | [sprite.png](sprite.png)         | Planet image used as possible player (but user can pass in a different file).      |
+|   4   | [setup_example.png](setup_example.png)         | Example screenshots of game play.      |
+|   5   | [movement_example_1.png](movement_example_1.png)         | Example screenshots of game play.      |
+|   6   | [movement_example_2.png](movement_example_2.png)         | Example screenshots of game play.      |
 
 
 ### Instructions
