@@ -34,22 +34,6 @@ def usage():
     print("Example:\n\n\t python basic.py title='Game 1' bg_path=bg.jpg img_path=sprite.png width=640 height=480 \n")
     sys.exit()
 
-colors = {
-    'magenta':(255, 0, 255, 100),
-    'cyan':(0, 255, 255, 100),
-    'background':(255,255,255,100)
-}
-
-#class Player(pygame.sprite.Sprite):
-    #x = int(kwargs['width'], 10)
-    #y = int(kwargs['height'], 10)
-
-    # Used to create player
- #   def __init__(self):
-   #     pygame.sprite.Sprite.__init__(self)
-   #     self.image = pygame.image.load(kwargs['img_path'])
-   #     self.rect  = self.image.get_rect()
-        #self.rect.center = (x / 2, y / 2)
 
 class Background(pygame.sprite.Sprite):
     def __init__(self, image_file, location):
@@ -74,6 +58,7 @@ def main(**kwargs):
 
     player = pygame.image.load(kwargs['img_path'])
     player = pygame.transform.scale(player, (70, 70))
+    player_rect = player.get_rect()
 
     #p_w = player.get_width()
     #p_h = player.get_height()
@@ -86,6 +71,7 @@ def main(**kwargs):
 
     # Set up the drawing window
     screen = pygame.display.set_mode([x,y])
+    screen_rect=screen.get_rect()
 
     # Run until the user asks to quit
     running = True
@@ -95,15 +81,12 @@ def main(**kwargs):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    p_x -= 5
-                if event.key == pygame.K_RIGHT:
-                    p_x += 5
-                if event.key == pygame.K_UP:
-                    p_y -= 5
-                if event.key == pygame.K_DOWN:
-                    p_y += 5
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]: p_y -= 2
+        if keys[pygame.K_LEFT]: p_x -= 2
+        if keys[pygame.K_DOWN]:  p_y += 2
+        if keys[pygame.K_RIGHT]: p_x += 2
+        #player.clamp_ip(screen_rect) # ensure player is inside screen
 
         # Draw / render
         screen.blit(BackGround.image, BackGround.rect)
