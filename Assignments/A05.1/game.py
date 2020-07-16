@@ -57,7 +57,7 @@ def main(**kwargs):
     BackGround = Background(kwargs['bg_path'], [0,0])
 
     player = pygame.image.load(kwargs['img_path'])
-    player = pygame.transform.scale(player, (70, 70))
+    player = pygame.transform.scale(player, (kwargs['player_startx'], kwargs['player_starty']))
     player_rect = player.get_rect()
 
     p_w = player.get_width()
@@ -102,12 +102,12 @@ def main(**kwargs):
 
 if __name__=='__main__':
     """
-    This example has 5 required parameters, so after stripping the file name out of
+    This example has 7 required parameters, so after stripping the file name out of
     the list argv, I can test the len() of argv to see if it has 5 params in it.
     """
     argv = sys.argv[1:]
 
-    if len(argv) < 5:
+    if len(argv) < 7:
         print(len(argv))
         usage()
 
