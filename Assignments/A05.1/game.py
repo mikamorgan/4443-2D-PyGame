@@ -60,11 +60,11 @@ def main(**kwargs):
     player = pygame.transform.scale(player, (70, 70))
     player_rect = player.get_rect()
 
-    #p_w = player.get_width()
-    #p_h = player.get_height()
+    p_w = player.get_width()
+    p_h = player.get_height()
 
-    p_x = x / 2 - player.get_width()
-    p_y = y / 2 - player.get_height()
+    p_x = x / 2 - p_w
+    p_y = y / 2 - p_h
 
     # sets the window title
     pygame.display.set_caption(kwargs['title'])
@@ -86,7 +86,11 @@ def main(**kwargs):
         if keys[pygame.K_LEFT]: p_x -= 2
         if keys[pygame.K_DOWN]:  p_y += 2
         if keys[pygame.K_RIGHT]: p_x += 2
-        #player.clamp_ip(screen_rect) # ensure player is inside screen
+        
+        if p_x > (x - p_w): p_x = x - p_w
+        if p_x < 0: p_x = 0
+        if p_y > (y - p_h): p_y = y - p_h
+        if p_y < 0: p_y = 0
 
         # Draw / render
         screen.blit(BackGround.image, BackGround.rect)
