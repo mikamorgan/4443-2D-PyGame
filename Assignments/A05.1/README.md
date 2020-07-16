@@ -46,5 +46,5 @@ Example of player movement using the arrow keys:
   - PNG files work best for players, to preserve the transparent layer around your character
 
 - Example Command:
-    - `python <code_name> <bg_image_filepath> <player_image_filepath> <screen_width> <screen_height> <player_start_x> <player_start_y>`
+    - `python <code_name> <window_title> <bg_image_filepath> <player_image_filepath> <screen_width> <screen_height> <player_start_x> <player_start_y>`
     - `python game.py title="Move Player" bg_path=bg.jpg img_path=sprite.png width=640 height=480 player_start_x=70 player_start_y=70`
