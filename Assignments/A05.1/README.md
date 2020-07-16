@@ -23,6 +23,7 @@ Example of player movement using the arrow keys:
 |   4   | [setup_example.png](setup_example.png)         | Example screenshots of game play.      |
 |   5   | [movement_example_1.png](movement_example_1.png)         | Example screenshots of game play.      |
 |   6   | [movement_example_2.png](movement_example_2.png)         | Example screenshots of game play.      |
+|   7   | [bg.mp3](bg.mp3)         | Background music: Deep Blue, courtesy of [bensound](https://www.bensound.com)     |
 
 
 ### Instructions

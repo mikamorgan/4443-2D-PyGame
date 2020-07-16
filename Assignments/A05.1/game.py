@@ -57,7 +57,7 @@ def main(**kwargs):
     BackGround = Background(kwargs['bg_path'], [0,0])
 
     player = pygame.image.load(kwargs['img_path'])
-    player = pygame.transform.scale(player, (kwargs['player_startx'], kwargs['player_starty']))
+    player = pygame.transform.scale(player, (int(kwargs['player_start_x'], 10), int(kwargs['player_start_y'],10)))
     player_rect = player.get_rect()
 
     p_w = player.get_width()
@@ -72,6 +72,9 @@ def main(**kwargs):
     # Set up the drawing window
     screen = pygame.display.set_mode([x,y])
     screen_rect=screen.get_rect()
+
+    pygame.mixer.music.load('bg.mp3')
+    pygame.mixer.music.play(-1)
 
     # Run until the user asks to quit
     running = True
