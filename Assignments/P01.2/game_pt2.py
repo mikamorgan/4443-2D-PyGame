@@ -71,11 +71,14 @@ def main(**kwargs):
     camX = 0
     camY = 0
 
-    RED = (255,0,0)
+    RED =   (255,0,0)
+    BLACK = (0,0,0)
 
     # Use the Background function to create a background using the file path passed in as a parameter
     # Position it at 0,0 (top left corner of game window), and scale it to fit window size
-    BackGround = Background(kwargs['bg_path'], [0,0])
+    empty_surface = pygame.Surface((1000, 1000))
+    empty_surface.fill(BLACK)
+    BackGround = Background(kwargs['bg_path'], [x/2,y/2])
 
     # Create a player using the file path passed in as a parameter
     # Set the initial size to the width and height passed in as parameters
@@ -144,9 +147,9 @@ def main(**kwargs):
         # Boundary check to keep the camera within the world. The screen boundary is 0-screen width and
         # 0-screen height. If the camera tries to go beyond one of these boundaries, reset it's location 
         # to the boundary line. Subtract the screen's width and height while checking the upper limits. 
-        if camX < 0: camX = 0
+        if camX < (-x/10): camX = (-x/10)
         if camX > (x - (x/5)): camX = x - (x/5)
-        if camY < 0: camY = 0
+        if camY < (-y/10): camY = -y/10
         if camY > (y - (y/5)): camY = y - (y/5)
         
         # Boundary check to keep the player on the screen. The screen boundary is 0-screen width and
@@ -172,14 +175,15 @@ def main(**kwargs):
 
         # Draw / render the screen. Continuously draw the background to cover up images of old
         # player locations. Blit the player after the screen so it is top layer (visible)
+        screen.blit(empty_surface, (0, 0))
         screen.blit(BackGround.image, (0 - camX,0 - camY))
         screen.blit(player,(p_x - camX,p_y - camY))
 
         ## If the player is hitting a world border, display a red border line
-        if x_min: pygame.draw.rect(screen,RED,(0,0,5,y))
-        if y_min: pygame.draw.rect(screen,RED,(0,0,x,5))
-        if x_max: pygame.draw.rect(screen,RED,(x-5,0,5,y))
-        if y_max: pygame.draw.rect(screen,RED,(0,y-5,x,5))
+        if x_min: pygame.draw.rect(screen,RED,(x/2,y/2,5,y))
+        if y_min: pygame.draw.rect(screen,RED,(x/2,y/2,x,5))
+        if x_max: pygame.draw.rect(screen,RED,(x-5,y/2,5,y))
+        if y_max: pygame.draw.rect(screen,RED,(x/2,y-5,x,5))
 
         pygame.display.flip()
 
