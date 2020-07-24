@@ -87,11 +87,11 @@ def getCardinalDirection(origin,target):
     return cardinal_directions[octant]
 
 
-
 class BackgroundScroller:
     def __init__(self,screen,floor,tile_size):
         # assumes squares for now
-
+        x = int(kwargs['width'], 10)
+        y = int(kwargs['height'], 10)
 
         self.screen = screen                            # pygame screen handle
         self.bgimg = pygame.image.load(floor)            # background img handle
@@ -99,17 +99,15 @@ class BackgroundScroller:
 
         self.tile_size = tile_size
 
-        self.gw = int(kwargs['width'], 10)       # game width
-        self.gh = int(kwargs['height'], 10)      # game height
+        self.gw = x       # game width
+        self.gh = y      # game height
 
-        #self.bgimg = pygame.transform.scale(self.bgimg, (1280, 720))
-
-        self.floorw = self.bgimg_size[0]
-        self.floorh = self.bgimg_size[1]
+        self.floorw = self.bgimg_size[0] / 2
+        self.floorh = self.bgimg_size[1] / 2
 
         self.cx = self.gw // 2                          # center x (of game window)
         self.cy = self.gh // 2                          # center y
-        self.step = 2                                   # move size in any direction
+        self.step = 1                                   # move size in any direction
         self.target_location = None                     # tuple (x,y) of where to move to
         self.cardinal_direction = None                  # direction to move to go toward goal
         self.distance_to_target = 0
@@ -153,18 +151,6 @@ class BackgroundScroller:
     def drawBackground(self):
         self.scrollBackground()
 
-# Background function that creates the background image using the file path and screen
-# sizes passed in as params. This function will be used to spawn groups of sprites in future
-class Background(pygame.sprite.Sprite):
-    def __init__(self, image_file, location):
-        x = int(kwargs['width'], 10)
-        y = int(kwargs['height'], 10)
-        
-        pygame.sprite.Sprite.__init__(self)  #call Sprite initializer
-        self.image = pygame.image.load(image_file)
-        self.image = pygame.transform.scale(self.image, (x, y))
-        self.rect = self.image.get_rect()
-        self.rect.left, self.rect.top = location
 
 # Main function that creates background and sprite, controls movement, and checks for updates (keyboard entry)
 def main(**kwargs):
@@ -182,7 +168,7 @@ def main(**kwargs):
 
     # Use the Background function to create a background using the file path passed in as a parameter
     # Position it at 0,0 (top left corner of game window), and scale it to fit window size
-    BackGround = BackgroundScroller(screen, kwargs['bg_path'], 40)
+    Background = BackgroundScroller(screen, kwargs['bg_path'], 40)
 
     # Create a player using the file path passed in as a parameter
     # Set the initial size to the width and height passed in as parameters
@@ -222,20 +208,26 @@ def main(**kwargs):
         # Need to use get_pressed() method instead of get events to allow for continuous movement
         # (if the button is held down). The 2 represents the player speed
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP]: p_y -= 2
-        if keys[pygame.K_LEFT]: p_x -= 2
-        if keys[pygame.K_DOWN]:  p_y += 2
-        if keys[pygame.K_RIGHT]: p_x += 2
+        if keys[pygame.K_UP]: 
+            p_y -= 2
+        if keys[pygame.K_LEFT]: 
+            p_x -= 2
+        if keys[pygame.K_DOWN]:  
+            p_y += 2
+        if keys[pygame.K_RIGHT]: 
+            p_x += 2
         
+        Background.setScrollDirection((p_x,p_y))
+
         # Boundary check to keep the player on the screen. The screen boundary is 0-screen width and
         # 0-screen height. If the player tries to go beyond one of these boundaries, reset their location 
         # to the boundary line. Subtract the player's width and height while checking the upper limits
         # because the player location is based on the top, left corner. Offset the limit so the player
         # can't go offscreen the distance of the player size.
-        if p_x > (x - p_w): p_x = x - p_w
-        if p_x < 0: p_x = 0
-        if p_y > (y - p_h): p_y = y - p_h
-        if p_y < 0: p_y = 0
+        #if p_x > (x - p_w): p_x = x - p_w
+        #if p_x < 0: p_x = 0
+        #if p_y > (y - p_h): p_y = y - p_h
+        #if p_y < 0: p_y = 0
 
         # Draw / render the screen. Continuously draw the background to cover up images of old
         # player locations. Blit the player after the screen so it is top layer (visible)
