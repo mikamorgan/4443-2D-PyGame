@@ -149,7 +149,7 @@ def main(**kwargs):
         # to the boundary line. Subtract the screen's width and height while checking the upper limits. 
         if camX < (-x/10): camX = (-x/10)
         if camX > (x - (x/5)): camX = x - (x/5)
-        if camY < (-y/10): camY = -y/10
+        if camY < (-y/10): camY = (-y/10)
         if camY > (y - (y/5)): camY = y - (y/5)
         
         # Boundary check to keep the player on the screen. The screen boundary is 0-screen width and
@@ -171,7 +171,7 @@ def main(**kwargs):
             y_min = True
 
         x = x / 5
-        y = y /5
+        y = y / 5
 
         # Draw / render the screen. Continuously draw the background to cover up images of old
         # player locations. Blit the player after the screen so it is top layer (visible)
@@ -180,10 +180,10 @@ def main(**kwargs):
         screen.blit(player,(p_x - camX,p_y - camY))
 
         ## If the player is hitting a world border, display a red border line
-        if x_min: pygame.draw.rect(screen,RED,(x/2,y/2,5,y))
-        if y_min: pygame.draw.rect(screen,RED,(x/2,y/2,x,5))
-        if x_max: pygame.draw.rect(screen,RED,(x-5,y/2,5,y))
-        if y_max: pygame.draw.rect(screen,RED,(x/2,y-5,x,5))
+        if x_min: pygame.draw.rect(screen,RED,(x/2,(0-y/2),5,y * 5))
+        if y_min: pygame.draw.rect(screen,RED,((0-x/2),y/2,x * 5,5))
+        if x_max: pygame.draw.rect(screen,RED,(x-5,(0-y/2),5,y*5))
+        if y_max: pygame.draw.rect(screen,RED,((0-x/2),y-5,x*5,5))
 
         pygame.display.flip()
 
