@@ -1,5 +1,5 @@
 # Import and initialize the pygame library
-import pygame, sys, os, math
+import pygame, sys, os
 
 #A05.1  Mika Morgan
 
@@ -45,112 +45,18 @@ def usage():
     print("Example:\n\n\t python basic.py title='Game 1' bg_path=bg.jpg img_path=sprite.png width=640 height=480 \n")
     sys.exit()
 
-def straightDistance(A,B,C=None,D=None):
-    '''
-    Returns the cartisian distance between 2 points on a 2d plane.
-            Parameters:
-                    A (int): x coord of point 1
-                    B (int): y coord of point 1
-                    C (int): x coord of point 2
-                    D (int): y coord of point 2
-            Returns:
-                    distance (float): Cartesian distance
-    '''
-    if type(A) == tuple and type(B) == tuple:
-        distance = ((A[0]-B[0])**2 + (A[1]-B[1])**2)**0.5
-    else:
-        distance = ((A-C)**2 + (B-D)**2)**0.5
-    return distance
-
-cardinal_directions = ('W','NW','N','NE','E','SE','S','SW')
-
-def getCardinalDirection(origin,target):
-    """
-    https://gamedev.stackexchange.com/questions/49290/whats-the-best-way-of-transforming-a-2d-vector-into-the-closest-8-way-compass-d
-    This method finds the angle between an origin location and a target location.
-    Using some simple but cool arithmetic, it converts the angle into an int value: 0-7 (8 values) that corresponds
-        to one of the 8 semi-major cardinal directions. Major being N, S, E, and W. Each of the 8 represents a 45 degree
-        pie slice of the compass circle.
-            Params:
-                origin: (tuple): (x,y)
-                target: (tuple): (x,y)
-            Returns:
-                cardinal_direction (string) : one of 'W','NW','N','NE','E','SE','S','SW'
-    """
-    cards = []
-    dx = origin[0] - target[0]
-    dy = origin[1] - target[1]
-    angle = math.atan2(dy, dx)
-
-    octant = round(8 * angle / (2*math.pi) + 8) % 8
-
-    return cardinal_directions[octant]
-
-
-class BackgroundScroller:
-    def __init__(self,screen,floor,tile_size):
-        # assumes squares for now
+# Background function that creates the background image using the file path and screen
+# sizes passed in as params. This function will be used to spawn groups of sprites in future
+class Background(pygame.sprite.Sprite):
+    def __init__(self, image_file, location):
         x = int(kwargs['width'], 10)
         y = int(kwargs['height'], 10)
-
-        self.screen = screen                            # pygame screen handle
-        self.bgimg = pygame.image.load(floor)            # background img handle
-        self.bgimg_size = self.bgimg.get_rect().size    # size of bg image: tuple (w,h)
-
-        self.tile_size = tile_size
-
-        self.gw = x       # game width
-        self.gh = y      # game height
-
-        self.floorw = self.bgimg_size[0] / 2
-        self.floorh = self.bgimg_size[1] / 2
-
-        self.cx = self.gw // 2                          # center x (of game window)
-        self.cy = self.gh // 2                          # center y
-        self.step = 1                                   # move size in any direction
-        self.target_location = None                     # tuple (x,y) of where to move to
-        self.cardinal_direction = None                  # direction to move to go toward goal
-        self.distance_to_target = 0
-        self.scroll_x = 0
-        self.scroll_y = 0
-
-        self.w_buffer = (self.floorw-self.gw) // 2
-        self.h_buffer = (self.floorh-self.gh) // 2
-
-    def setScrollDirection(self,loc=None):
-        """If keys are pressed or mouse is clicked, set a goal location to scroll toward.
-        """
-        self.target_location = loc
-        self.cardinal_direction = getCardinalDirection((self.cx,self.cy), self.target_location)
-        self.distance_to_target = straightDistance((self.cx,self.cy),self.target_location)
-
-        print(self.target_location)
-        print(self.cardinal_direction)
-        print(self.distance_to_target)
-
-    def scrollBackground(self):
-
-        if self.target_location != None:
-            if 'N' in self.cardinal_direction :
-                self.scroll_y -= self.step
-            if 'S' in self.cardinal_direction :
-                self.scroll_y += self.step
-            if 'E' in self.cardinal_direction :
-                self.scroll_x += self.step
-            if 'W' in self.cardinal_direction :
-                self.scroll_x -= self.step
-
-        self.scroll_x = self.scroll_x % self.tile_size
-        self.scroll_y = self.scroll_y % self.tile_size
-
-        basex = self.w_buffer + (self.scroll_x)
-        basey = self.h_buffer + (self.scroll_y)
-
-        self.screen.blit(self.bgimg, (0,0), (basex,basey,self.gw,self.gh))
-
-    def drawBackground(self):
-        self.scrollBackground()
-
+        
+        pygame.sprite.Sprite.__init__(self)  #call Sprite initializer
+        self.image = pygame.image.load(image_file)
+        self.image = pygame.transform.scale(self.image, (x * 5, y * 5))
+        self.rect = self.image.get_rect()
+        self.rect.left, self.rect.top = location
 
 # Main function that creates background and sprite, controls movement, and checks for updates (keyboard entry)
 def main(**kwargs):
@@ -162,13 +68,12 @@ def main(**kwargs):
     x = int(kwargs['width'], 10)
     y = int(kwargs['height'], 10)
 
-    # Set up the drawing window using the width and height passed in as parameters
-    screen = pygame.display.set_mode([x,y])
-    screen_rect=screen.get_rect()
+    camX = 0
+    camY = 0
 
     # Use the Background function to create a background using the file path passed in as a parameter
     # Position it at 0,0 (top left corner of game window), and scale it to fit window size
-    Background = BackgroundScroller(screen, kwargs['bg_path'], 40)
+    BackGround = Background(kwargs['bg_path'], [0,0])
 
     # Create a player using the file path passed in as a parameter
     # Set the initial size to the width and height passed in as parameters
@@ -188,6 +93,10 @@ def main(**kwargs):
 
     # Set the window title to what was passed in as a parameter
     pygame.display.set_caption(kwargs['title'])
+
+    # Set up the drawing window using the width and height passed in as parameters
+    screen = pygame.display.set_mode([x,y])
+    screen_rect=screen.get_rect()
 
     # Load and play background music. -1 means loop forever
     pygame.mixer.music.load('bg.mp3')
@@ -210,15 +119,17 @@ def main(**kwargs):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]: 
             p_y -= 2
+            camY -= 2
         if keys[pygame.K_LEFT]: 
             p_x -= 2
+            camX -= 2
         if keys[pygame.K_DOWN]:  
             p_y += 2
+            camY += 2
         if keys[pygame.K_RIGHT]: 
             p_x += 2
+            camX += 2
         
-        Background.setScrollDirection((p_x,p_y))
-
         # Boundary check to keep the player on the screen. The screen boundary is 0-screen width and
         # 0-screen height. If the player tries to go beyond one of these boundaries, reset their location 
         # to the boundary line. Subtract the player's width and height while checking the upper limits
@@ -231,8 +142,8 @@ def main(**kwargs):
 
         # Draw / render the screen. Continuously draw the background to cover up images of old
         # player locations. Blit the player after the screen so it is top layer (visible)
-        Background.drawBackground()
-        screen.blit(player, (p_x, p_y))
+        screen.blit(BackGround.image, (0 - camX,0 - camY))
+        screen.blit(player,(p_x - camX,p_y - camY))
         pygame.display.flip()
 
     # Done! Time to quit.
