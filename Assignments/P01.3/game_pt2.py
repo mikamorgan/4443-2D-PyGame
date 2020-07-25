@@ -111,7 +111,7 @@ def main(**kwargs):
     # Set the initial size to the width and height passed in as parameters
     # Since the dictionary values are passed in as strings, convert them to ints in base 10 to use as size
     player = BasicSprite(kwargs['img_path'])
-    player.image = player.images[3]
+    player.image = player.images[5]
     player.image = pygame.transform.scale(player.image, (int(kwargs['player_start_x'], 10), int(kwargs['player_start_y'],10)))
 
     # Because the player size will change throughout the game, we need functions to continuously check size
@@ -163,12 +163,12 @@ def main(**kwargs):
             p_y -= 2
             camY -= 2
             com_Y += p_h
-            player.image = player.images[3]
+            player.image = player.images[5]
         if keys[pygame.K_LEFT]: 
             p_x -= 2
             camX -= 2
             com_X += p_w
-            player.image = player.images[1]
+            player.image = player.images[3]
         if keys[pygame.K_DOWN]:  
             p_y += 2
             camY += 2
@@ -178,6 +178,14 @@ def main(**kwargs):
             p_x += 2
             camX += 2
             com_X -= p_w
+            player.image = player.images[4]
+        if keys[pygame.K_UP] and keys[pygame.K_LEFT]:
+            player.image = player.images[6]
+        if keys[pygame.K_UP] and keys[pygame.K_RIGHT]:
+            player.image = player.images[7]
+        if keys[pygame.K_DOWN] and keys[pygame.K_LEFT]:
+            player.image = player.images[1]
+        if keys[pygame.K_DOWN] and keys[pygame.K_RIGHT]:
             player.image = player.images[2]
 
         x = x * 5
