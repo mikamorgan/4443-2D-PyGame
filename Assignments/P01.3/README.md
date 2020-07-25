@@ -1,8 +1,8 @@
-## P01.2 - CovidZAR.EIEIO cont.
+## P01.3 - CovidZAR.EIEIO cont.
 ### Mika Morgan
 ### Description:
 
-This is a Python game similar to agar.io. This second part expands on the first program portion, found [here](./../P01.1/README.md). The updated game code does the same as before, except the background image is stretched to 5 times the game window width and 5 times the game window height. As the player moves, the top down view camera moves with them, scrolling around the portion of the image within current view. When the player hits the image border, a red wall indicating the end of the game world appears. The camera is allowed to scroll past the image end to keep the camera centered around the player at all times.
+This is a Python game similar to agar.io. This third part expands on the first two program portions, found [here](./../P01.2/README.md). The updated game code does the same as before, with the addition of a player animation. The planet player (used as an example sprite) now has an animated comet tail that follows behind the player. The tail grows as the player grows and fades as the player moves.
 
 
 The sample background and player image used in the example commands should display:

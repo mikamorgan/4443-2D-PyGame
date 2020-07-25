@@ -1,5 +1,5 @@
 # Import and initialize the pygame library
-import pygame, sys, os
+import pygame, sys, os, glob
 
 #P01.2  Mika Morgan
 
@@ -58,6 +58,29 @@ class Background(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
 
+class CometSprite(pygame.sprite.Sprite):
+    def __init__(self, p_x, p_y):
+        print('made it 1')
+        super(CometSprite, self).__init__()
+        self.images = []
+        for image in glob.glob('./comet_tail/*.png'):
+            self.images.append(pygame.image.load(image))
+            print('got image')
+
+        self.index = 0
+        self.image = self.images[self.index]
+        self.rect = pygame.Rect(p_x, p_y, 320, 240)
+        print('made it 2')
+
+    def update(self):
+        '''This method iterates through the elements inside self.images and 
+        displays the next one each tick.'''
+        self.index += 1
+        if self.index >= len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+        print(self.index)
+
 # Main function that creates background and sprite, controls movement, and checks for updates (keyboard entry)
 def main(**kwargs):
     # Initialize PyGame
@@ -97,6 +120,8 @@ def main(**kwargs):
     # Spawn the player in the middle of the game window
     p_x = x / 2 - p_w
     p_y = y / 2 - p_h
+
+    comet = CometSprite(p_x,p_y)
 
     # Set the window title to what was passed in as a parameter
     pygame.display.set_caption(kwargs['title'])
@@ -175,10 +200,13 @@ def main(**kwargs):
         x = x / 5
         y = y / 5
 
+        comet.update()
+
         # Draw / render the screen. Continuously draw the background to cover up images of old
         # player locations. Blit the player after the screen so it is top layer (visible)
         screen.blit(empty_surface, (0, 0))
         screen.blit(BackGround.image, (0 - camX,0 - camY))
+        screen.blit(comet.image,(p_x,p_y + p_h))
         screen.blit(player,(p_x - camX,p_y - camY))
 
         ## If the player is hitting a world border, display a red border line
