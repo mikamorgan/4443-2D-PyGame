@@ -58,16 +58,15 @@ class Background(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
 
-class CometSprite(pygame.sprite.Sprite):
-    def __init__(self, p_x, p_y):
-        super(CometSprite, self).__init__()
+class BasicSprite(pygame.sprite.Sprite):
+    def __init__(self, folder_name):
+        super(BasicSprite, self).__init__()
         self.images = []
-        for image in glob.glob('./comet_tail/*.png'):
+        for image in glob.glob('./'+ folder_name +'/*.png'):
             self.images.append(pygame.image.load(image))
 
         self.index = 0
         self.image = self.images[self.index]
-        self.rect = pygame.Rect(p_x, p_y, 320, 240)
 
     def update(self):
         '''This method iterates through the elements inside self.images and 
@@ -77,6 +76,13 @@ class CometSprite(pygame.sprite.Sprite):
             self.index = 0
         self.image = self.images[self.index]
 
+    def get_width(self):
+        p_x = self.image.get_width()
+        return p_x
+
+    def get_height(self):
+        p_y = self.image.get_height()
+        return p_y
 # Main function that creates background and sprite, controls movement, and checks for updates (keyboard entry)
 def main(**kwargs):
     # Initialize PyGame
@@ -104,8 +110,9 @@ def main(**kwargs):
     # Create a player using the file path passed in as a parameter
     # Set the initial size to the width and height passed in as parameters
     # Since the dictionary values are passed in as strings, convert them to ints in base 10 to use as size
-    player = pygame.image.load(kwargs['img_path'])
-    player = pygame.transform.scale(player, (int(kwargs['player_start_x'], 10), int(kwargs['player_start_y'],10)))
+    player = BasicSprite(kwargs['img_path'])
+    player.image = player.images[3]
+    player.image = pygame.transform.scale(player.image, (int(kwargs['player_start_x'], 10), int(kwargs['player_start_y'],10)))
 
     # Because the player size will change throughout the game, we need functions to continuously check size
     # This information will be used to set boundary windows (keep sprite on screen) and compare the player
@@ -119,7 +126,7 @@ def main(**kwargs):
 
     # Create the comet tail animation sprite
     # Set the initial x and y offsets to 0
-    comet = CometSprite(p_x - p_w/2,p_y - p_h/2)
+    comet = BasicSprite('comet_tail')
     com_X = 0
     com_Y = 0
 
@@ -156,18 +163,22 @@ def main(**kwargs):
             p_y -= 2
             camY -= 2
             com_Y += p_h
+            player.image = player.images[3]
         if keys[pygame.K_LEFT]: 
             p_x -= 2
             camX -= 2
             com_X += p_w
+            player.image = player.images[1]
         if keys[pygame.K_DOWN]:  
             p_y += 2
             camY += 2
             com_Y -= p_h
+            player.image = player.images[0]
         if keys[pygame.K_RIGHT]: 
             p_x += 2
             camX += 2
             com_X -= p_w
+            player.image = player.images[2]
 
         x = x * 5
         y = y * 5
@@ -208,13 +219,14 @@ def main(**kwargs):
         y = y / 5
 
         comet.update()
+        player.image = pygame.transform.scale(player.image, (int(kwargs['player_start_x'], 10), int(kwargs['player_start_y'],10)))
 
         # Draw / render the screen. Continuously draw the background to cover up images of old
         # player locations. Blit the player after the screen so it is top layer (visible)
         screen.blit(empty_surface, (0, 0))
         screen.blit(BackGround.image, (0 - camX,0 - camY))
         screen.blit(comet.image,(((p_x - p_w * 2) - camX + com_X),((p_y - p_h) - camY + com_Y)))
-        screen.blit(player,(p_x - camX,p_y - camY))
+        screen.blit(player.image,(p_x - camX,p_y - camY))
 
         ## If the player is hitting a world border, display a red border line
         if x_min: pygame.draw.rect(screen,RED,(x/2,(0-y/2),5,y * 5))
