@@ -1,29 +1,31 @@
-## A05 - CovidZAR.EIEIO
+## P01.2 - CovidZAR.EIEIO cont.
 ### Mika Morgan
 ### Description:
 
 This is a Python game similar to agar.io. This first part sets up the game window based on user input passed in as command line arguments. The user can designate the window title, screen size, background image, sprite image, and sprite size for the player. A GUI window will spawn to the specified size and the specified background image will fill the screen (scaled to fit). A single player will spawn in the middle of the window, using the image and size passed in. The sample background and player image used in the example commands should display:
 
-<img src="setup_example.png" width="400">
+<img src="top_border.png" width="400">
+<img src="left_border.png" width="400">
 
 The player can be moved using the up, down, left, and right arrow keys on the keyboard. Because this is a 2D game using a top-down perspective, the up and down arrows move the player's y position on the screen, and the left and right arrows move the player's x position on the screen.
 
 Example of player movement using the arrow keys:
 
-<img src="movement_example_1.png" width="400">
-<img src="movement_example_2.png" width="400">
+<img src="right_border.png" width="400">
+<img src="bottom_left_border.png" width="400">
 
 ### Files
 
 |   #   | File            | Description                                        |
 | :---: | --------------- | -------------------------------------------------- |
-|   1   | [game.py](game.py)         | Main driver of my project that launches game.      |
+|   1   | [game_pt2.py](game_pt2.py)         | Main driver of my project that launches game.      |
 |   2   | [bg.jpg](bg.jpg)           | Galaxy image used as possible background (but user can pass in a different file).     |
 |   3   | [sprite.png](sprite.png)         | Planet image used as possible player (but user can pass in a different file).      |
-|   4   | [setup_example.png](setup_example.png)         | Example screenshots of game play.      |
-|   5   | [movement_example_1.png](movement_example_1.png)         | Example screenshots of game play.      |
-|   6   | [movement_example_2.png](movement_example_2.png)         | Example screenshots of game play.      |
-|   7   | [bg.mp3](bg.mp3)         | Background music: Deep Blue, courtesy of [bensound](https://www.bensound.com)     |
+|   4   | [top_border.png](top_border.png)         | Example screenshots of game play.      |
+|   5   | [left_border.png](left_border.png)         | Example screenshots of game play.      |
+|   6   | [right_border.png](right_border.png)         | Example screenshots of game play.      |
+|   7   | [bottom_left_border.png](bottom_left_border.png)         | Example screenshots of game play.      |
+|   8   | [bg.mp3](bg.mp3)         | Background music: Deep Blue, courtesy of [bensound](https://www.bensound.com)     |
 
 
 ### Instructions
