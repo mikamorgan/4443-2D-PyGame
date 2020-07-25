@@ -1,15 +1,15 @@
 # Import and initialize the pygame library
 import pygame, sys, os
 
-#A05.1  Mika Morgan
+#P01.2  Mika Morgan
 
-# This is a Python game similar to agar.io. This first part sets up the game window based on user input 
-# passed in as command line arguments. The user can designate the window title, screen size, background image, 
-# sprite image, and sprite size for the player. A GUI window will spawn to the specified size and the specified
-# background image will fill the screen (scaled to fit). A single player will spawn in the middle of the window, 
-# using the image and size passed in.The player can be moved using the up, down, left, and right arrow keys on the 
-# keyboard. Because this is a 2D game using a top-down perspective, the up and down arrows move the player's 
-# y position on the screen, and the left and right arrows move the player's x position on the screen.
+# This is a Python game similar to agar.io. This second part expands on the game setup and player movement created in 
+# P01.1. New game play added in this code is the background image is stretched to 5 times the game window width and 5 
+# times the game window height. As the player moves, the top down view camera moves with them, scrolling around the 
+# portion of the image within current view. When the player hits the image border, a red wall indicating the end of 
+# the game world appears. The camera is allowed to scroll past the image end to keep the camera centered around the player 
+# at all times. An empty black background pads the game play image to provide a buffer when the player reaches a game 
+# border and the camera needs to stay centered around the player.
 
 # Function that reads in the command line parameters and returns them as a dictionary, split around the =
 def mykwargs(argv):
@@ -68,14 +68,16 @@ def main(**kwargs):
     x = int(kwargs['width'], 10)
     y = int(kwargs['height'], 10)
 
+    # Create variables to hold "camera position" for part of game world to display
     camX = 0
     camY = 0
 
+    # Create colors for the world border alerts and empty background padding
     RED =   (255,0,0)
     BLACK = (0,0,0)
 
     # Use the Background function to create a background using the file path passed in as a parameter
-    # Position it at 0,0 (top left corner of game window), and scale it to fit window size
+    # Position it offset from the world boundary so the camera can stay with player, even on world edge
     empty_surface = pygame.Surface((1000, 1000))
     empty_surface.fill(BLACK)
     BackGround = Background(kwargs['bg_path'], [x/2,y/2])
