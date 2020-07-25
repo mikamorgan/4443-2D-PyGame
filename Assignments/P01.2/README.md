@@ -2,14 +2,19 @@
 ### Mika Morgan
 ### Description:
 
-This is a Python game similar to agar.io. This first part sets up the game window based on user input passed in as command line arguments. The user can designate the window title, screen size, background image, sprite image, and sprite size for the player. A GUI window will spawn to the specified size and the specified background image will fill the screen (scaled to fit). A single player will spawn in the middle of the window, using the image and size passed in. The sample background and player image used in the example commands should display:
+This is a Python game similar to agar.io. This second part expands on the first program portion, found [here](./../P01.1/README.md). The updated game code does the same as before, except the background image is stretched to 5 times the game window width and 5 times the game window height. As the player moves, the top down view camera moves with them, scrolling around the portion of the image within current view. When the player hits the image border, a red wall indicating the end of the game world appears. The camera is allowed to scroll past the image end to keep the camera centered around the player at all times.
+
+
+The sample background and player image used in the example commands should display:
 
 <img src="top_border.png" width="400">
 <img src="left_border.png" width="400">
 
-The player can be moved using the up, down, left, and right arrow keys on the keyboard. Because this is a 2D game using a top-down perspective, the up and down arrows move the player's y position on the screen, and the left and right arrows move the player's x position on the screen.
 
-Example of player movement using the arrow keys:
+The top and left image borders can be seen, with the red border alert. You can also see an empty black background beyond the game image, which allows the camera to remain centered on the player. The previous examples show a 640 x 480 game window, but the game is scalable to any size that fits your device screen. 
+
+
+Example of game play using a 1040 x 700 screen size:
 
 <img src="right_border.png" width="400">
 <img src="bottom_left_corner.png" width="400">
