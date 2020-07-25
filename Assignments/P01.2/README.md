@@ -12,7 +12,7 @@ The player can be moved using the up, down, left, and right arrow keys on the ke
 Example of player movement using the arrow keys:
 
 <img src="right_border.png" width="400">
-<img src="bottom_left_border.png" width="400">
+<img src="bottom_left_corner.png" width="400">
 
 ### Files
 
@@ -24,7 +24,7 @@ Example of player movement using the arrow keys:
 |   4   | [top_border.png](top_border.png)         | Example screenshots of game play.      |
 |   5   | [left_border.png](left_border.png)         | Example screenshots of game play.      |
 |   6   | [right_border.png](right_border.png)         | Example screenshots of game play.      |
-|   7   | [bottom_left_border.png](bottom_left_border.png)         | Example screenshots of game play.      |
+|   7   | [bottom_left_corner.png](bottom_left_corner.png)         | Example screenshots of game play.      |
 |   8   | [bg.mp3](bg.mp3)         | Background music: Deep Blue, courtesy of [bensound](https://www.bensound.com)     |
 
 
