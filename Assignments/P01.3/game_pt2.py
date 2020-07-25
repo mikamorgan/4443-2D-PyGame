@@ -67,7 +67,7 @@ class BasicSprite(pygame.sprite.Sprite):
 
         self.index = 0
         self.image = self.images[self.index]
-
+        
     def update(self):
         '''This method iterates through the elements inside self.images and 
         displays the next one each tick.'''
@@ -135,7 +135,6 @@ def main(**kwargs):
 
     # Set up the drawing window using the width and height passed in as parameters
     screen = pygame.display.set_mode([x,y])
-    screen_rect=screen.get_rect()
 
     # Load and play background music. -1 means loop forever
     pygame.mixer.music.load('bg.mp3')
