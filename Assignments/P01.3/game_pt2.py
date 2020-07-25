@@ -60,17 +60,14 @@ class Background(pygame.sprite.Sprite):
 
 class CometSprite(pygame.sprite.Sprite):
     def __init__(self, p_x, p_y):
-        print('made it 1')
         super(CometSprite, self).__init__()
         self.images = []
         for image in glob.glob('./comet_tail/*.png'):
             self.images.append(pygame.image.load(image))
-            print('got image')
 
         self.index = 0
         self.image = self.images[self.index]
         self.rect = pygame.Rect(p_x, p_y, 320, 240)
-        print('made it 2')
 
     def update(self):
         '''This method iterates through the elements inside self.images and 
@@ -79,7 +76,6 @@ class CometSprite(pygame.sprite.Sprite):
         if self.index >= len(self.images):
             self.index = 0
         self.image = self.images[self.index]
-        print(self.index)
 
 # Main function that creates background and sprite, controls movement, and checks for updates (keyboard entry)
 def main(**kwargs):
@@ -121,7 +117,11 @@ def main(**kwargs):
     p_x = x / 2 - p_w
     p_y = y / 2 - p_h
 
-    comet = CometSprite(p_x,p_y)
+    # Create the comet tail animation sprite
+    # Set the initial x and y offsets to 0
+    comet = CometSprite(p_x - p_w/2,p_y - p_h/2)
+    com_X = 0
+    com_Y = 0
 
     # Set the window title to what was passed in as a parameter
     pygame.display.set_caption(kwargs['title'])
@@ -137,6 +137,9 @@ def main(**kwargs):
     # Game update. Run until the user asks to quit
     running = True
     while running:
+        # Reset the comet tail offset each loop
+        com_X = 0
+        com_Y = 0
 
         # Check to see if the quit button was pressed
         # If it is, break out of the game play loop
@@ -152,15 +155,19 @@ def main(**kwargs):
         if keys[pygame.K_UP]: 
             p_y -= 2
             camY -= 2
+            com_Y += p_h
         if keys[pygame.K_LEFT]: 
             p_x -= 2
             camX -= 2
+            com_X += p_w
         if keys[pygame.K_DOWN]:  
             p_y += 2
             camY += 2
+            com_Y -= p_h
         if keys[pygame.K_RIGHT]: 
             p_x += 2
             camX += 2
+            com_X -= p_w
 
         x = x * 5
         y = y * 5
@@ -206,7 +213,7 @@ def main(**kwargs):
         # player locations. Blit the player after the screen so it is top layer (visible)
         screen.blit(empty_surface, (0, 0))
         screen.blit(BackGround.image, (0 - camX,0 - camY))
-        screen.blit(comet.image,(p_x,p_y + p_h))
+        screen.blit(comet.image,(((p_x - p_w * 2) - camX + com_X),((p_y - p_h) - camY + com_Y)))
         screen.blit(player,(p_x - camX,p_y - camY))
 
         ## If the player is hitting a world border, display a red border line
