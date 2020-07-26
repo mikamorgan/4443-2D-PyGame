@@ -1,15 +1,13 @@
 # Import and initialize the pygame library
 import pygame, sys, os, glob
 
-#P01.2  Mika Morgan
+#P01.3  Mika Morgan
 
 # This is a Python game similar to agar.io. This second part expands on the game setup and player movement created in 
-# P01.1. New game play added in this code is the background image is stretched to 5 times the game window width and 5 
-# times the game window height. As the player moves, the top down view camera moves with them, scrolling around the 
-# portion of the image within current view. When the player hits the image border, a red wall indicating the end of 
-# the game world appears. The camera is allowed to scroll past the image end to keep the camera centered around the player 
-# at all times. An empty black background pads the game play image to provide a buffer when the player reaches a game 
-# border and the camera needs to stay centered around the player.
+# P01.2. The updated game code does the same as before, with the addition of a player animation. The planet player 
+# (used as an example sprite) now has an animated comet tail that follows behind the player. The tail grows as the player 
+# grows and fades as the player moves. The sample planet sprite provided will also turn to face the direction of movement, 
+# based on keyboard input. The player sprite spins when it hits a world border, in addition to displaying the red border wall.
 
 # Function that reads in the command line parameters and returns them as a dictionary, split around the =
 def mykwargs(argv):
@@ -58,6 +56,9 @@ class Background(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
 
+# Sprite function that creates the player sprite and comet tail animation using the images in the folder
+# file path passed in as params. It includes functions to get a sprite's width and height, and play all
+# images in succession. This is used to loop the comet tail animation, and spin the player sprite
 class BasicSprite(pygame.sprite.Sprite):
     def __init__(self, folder_name):
         super(BasicSprite, self).__init__()

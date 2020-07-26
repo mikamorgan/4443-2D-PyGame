@@ -4,7 +4,7 @@
 
 This is a Python game similar to agar.io. This third part expands on the first two program portions, found [here](./../P01.2/README.md). The updated game code does the same as before, with the addition of a player animation. The planet player (used as an example sprite) now has an animated comet tail that follows behind the player. The tail grows as the player grows and fades as the player moves. The sample planet sprite provided will also turn to face the direction of movement, based on keyboard input. The player sprite spins when it hits a world border, in addition to displaying the red border wall.
 
-# One important note
+### One important note
 The player sprite changed in this third part of the project from a single image, to an animated image. The program now expects a folder of images in succession to create the animation. That changes the way the program is called, and accepted user input. The program player sprite will work best with the provided sample file, or a folder of sprites with 8 images, one for each direction.
 
 
@@ -29,7 +29,7 @@ Example of boundary wall spin animation:
 |   1   | [game_pt3.py](game_pt3.py)         | Main driver of my project that launches game.      |
 |   2   | [bg.jpg](bg.jpg)           | Galaxy image used as possible background (but user can pass in a different file).     |
 |   3   | [planet_sprite](./planet_sprite)         | Folder of planet images used as possible player (but user can pass in a different file).      |
-|   4   | [comet_tail](./comet_tail)         | Folder of comet tail images used with sample player      |
+|   4   | [comet_tail](./comet_tail)         | Folder of comet tail images used with sample player.      |
 |   5   | [comet_tail_1.png](comet_tail_1.png)         | Example screenshots of game play.      |
 |   6   | [comet_tail_2.png](comet_tail_2.png)         | Example screenshots of game play.      |
 |   7   | [spin_animation_1.png](spin_animation_1.png)         | Example screenshots of game play.      |
