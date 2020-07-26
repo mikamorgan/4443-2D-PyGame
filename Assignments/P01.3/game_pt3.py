@@ -69,8 +69,6 @@ class BasicSprite(pygame.sprite.Sprite):
         self.image = self.images[self.index]
         
     def update(self):
-        '''This method iterates through the elements inside self.images and 
-        displays the next one each tick.'''
         self.index += 1
         if self.index >= len(self.images):
             self.index = 0
@@ -83,6 +81,7 @@ class BasicSprite(pygame.sprite.Sprite):
     def get_height(self):
         p_y = self.image.get_height()
         return p_y
+
 # Main function that creates background and sprite, controls movement, and checks for updates (keyboard entry)
 def main(**kwargs):
     # Initialize PyGame
@@ -111,7 +110,7 @@ def main(**kwargs):
     # Set the initial size to the width and height passed in as parameters
     # Since the dictionary values are passed in as strings, convert them to ints in base 10 to use as size
     player = BasicSprite(kwargs['img_path'])
-    player.image = player.images[5]
+    player.image = player.images[4]
     player.image = pygame.transform.scale(player.image, (int(kwargs['player_start_x'], 10), int(kwargs['player_start_y'],10)))
 
     # Because the player size will change throughout the game, we need functions to continuously check size
@@ -162,12 +161,12 @@ def main(**kwargs):
             p_y -= 2
             camY -= 2
             com_Y += p_h
-            player.image = player.images[5]
+            player.image = player.images[4]
         if keys[pygame.K_LEFT]: 
             p_x -= 2
             camX -= 2
             com_X += p_w
-            player.image = player.images[3]
+            player.image = player.images[2]
         if keys[pygame.K_DOWN]:  
             p_y += 2
             camY += 2
@@ -177,15 +176,15 @@ def main(**kwargs):
             p_x += 2
             camX += 2
             com_X -= p_w
-            player.image = player.images[4]
-        if keys[pygame.K_UP] and keys[pygame.K_LEFT]:
             player.image = player.images[6]
+        if keys[pygame.K_UP] and keys[pygame.K_LEFT]:
+            player.image = player.images[3]
         if keys[pygame.K_UP] and keys[pygame.K_RIGHT]:
-            player.image = player.images[7]
+            player.image = player.images[5]
         if keys[pygame.K_DOWN] and keys[pygame.K_LEFT]:
             player.image = player.images[1]
         if keys[pygame.K_DOWN] and keys[pygame.K_RIGHT]:
-            player.image = player.images[2]
+            player.image = player.images[7]
 
         x = x * 5
         y = y * 5
@@ -231,6 +230,12 @@ def main(**kwargs):
         # The planet sprite must be re-scaled because the frame is changed depending on the direction
         comet.update()
         player.image = pygame.transform.scale(player.image, (int(kwargs['player_start_x'], 10), int(kwargs['player_start_y'],10)))
+
+        # If the player is hitting a world boundary, play all sprite frames in succession, to give the appearance of spinning
+        # The images have to be re-scaled again, because the frame is changed
+        if x_min or x_max or y_min or y_max:
+            player.update()
+            player.image = pygame.transform.scale(player.image, (int(kwargs['player_start_x'], 10), int(kwargs['player_start_y'],10)))
 
         # Draw / render the screen. Continuously draw the background to cover up images of old
         # player locations. Blit the player after the screen so it is top layer (visible)
