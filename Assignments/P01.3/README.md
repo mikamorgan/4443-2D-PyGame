@@ -2,13 +2,13 @@
 ### Mika Morgan
 ### Description:
 
-This is a Python game similar to agar.io. This third part expands on the first two program portions, found [here](./../P01.2/README.md). The updated game code does the same as before, with the addition of a player animation. The planet player (used as an example sprite) now has an animated comet tail that follows behind the player. The tail grows as the player grows and fades as the player moves.
+This is a Python game similar to agar.io. This third part expands on the first two program portions, found [here](./../P01.2/README.md). The updated game code does the same as before, with the addition of a player animation. The planet player (used as an example sprite) now has an animated comet tail that follows behind the player. The tail grows as the player grows and fades as the player moves. The sample planet sprite provided will also turn to face the direction of movement, based on keyboard input. The player sprite spins when it hits a world border, in addition to displaying the red border wall.
 
 
-The sample background and player image used in the example commands should display:
+The sample background and player image used in the example commands should display a scene as shown below. You can see the comet tail in various stages of the animation, plus the planet rotating based on the direction of movement:
 
-<img src="top_border.png" width="400">
-<img src="left_border.png" width="400">
+<img src="comet_tail_1.png" width="400">
+<img src="comet_tail_2.png" width="400">
 
 
 The top and left image borders can be seen, with the red border alert. You can also see an empty black background beyond the game image, which allows the camera to remain centered on the player. The previous examples show a 640 x 480 game window, but the game is scalable to any size that fits your device screen. 

@@ -191,6 +191,8 @@ def main(**kwargs):
         y = y * 5
 
         # Create boolean flags to hold whether or not the player is hitting a world border
+        # These will be used to make the red border walls appear, and play hitting world 
+        # edge animation (spin the planet sprite)
         x_min = False
         x_max = False
         y_min = False
@@ -225,6 +227,8 @@ def main(**kwargs):
         x = x / 5
         y = y / 5
 
+        # The update function causes all 28 frames to play in succession, making the comet tail animation loop forever
+        # The planet sprite must be re-scaled because the frame is changed depending on the direction
         comet.update()
         player.image = pygame.transform.scale(player.image, (int(kwargs['player_start_x'], 10), int(kwargs['player_start_y'],10)))
 
