@@ -1,5 +1,5 @@
 # Import and initialize the pygame library
-import pygame, sys, os, glob
+import pygame, sys, os, glob, random
 from random import randint
 
 #P01.3  Mika Morgan
@@ -61,7 +61,7 @@ class Background(pygame.sprite.Sprite):
 # file path passed in as params. It includes functions to get a sprite's width and height, and play all
 # images in succession. This is used to loop the comet tail animation, and spin the player sprite
 class BasicSprite(pygame.sprite.Sprite):
-    def __init__(self, folder_name, x, y):
+    def __init__(self, folder_name, x, y, dir='N'):
         super(BasicSprite, self).__init__()
         self.images = []
         for image in glob.glob('./'+ folder_name +'/*.png'):
@@ -72,6 +72,8 @@ class BasicSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+
+        self.direction = dir
         
     def update(self):
         self.index += 1
@@ -136,6 +138,7 @@ def main(**kwargs):
 
     # Create a group of target sprites (planets to hit)
     targets = pygame.sprite.Group()
+    meteors = pygame.sprite.Group()
 
     for i in range (20):
         rand_x = randint(0,x * 5 - 100)
@@ -161,11 +164,17 @@ def main(**kwargs):
 
     # Game update. Run until the user asks to quit
     running = True
+    
     while running:
+        # Reset the meteor flag each loop
+        meteor_exists = False
+
         # Reset the comet tail offset each loop
         com_X = 0
         com_Y = 0
 
+        met_dir = 'N'
+        
         # Check to see if the quit button was pressed
         # If it is, break out of the game play loop
         for event in pygame.event.get():
@@ -182,29 +191,42 @@ def main(**kwargs):
             camY -= 2
             com_Y += p_h
             player.image = player.images[4]
+            met_dir = 'U'
         if keys[pygame.K_LEFT]: 
             p_x -= 2
             camX -= 2
             com_X += p_w
             player.image = player.images[2]
+            met_dir = 'L'
         if keys[pygame.K_DOWN]:  
             p_y += 2
             camY += 2
             com_Y -= p_h
             player.image = player.images[0]
+            met_dir = 'D'
         if keys[pygame.K_RIGHT]: 
             p_x += 2
             camX += 2
             com_X -= p_w
             player.image = player.images[6]
+            met_dir = 'R'
         if keys[pygame.K_UP] and keys[pygame.K_LEFT]:
             player.image = player.images[3]
+            met_dir = 'UL'
         if keys[pygame.K_UP] and keys[pygame.K_RIGHT]:
             player.image = player.images[5]
+            met_dir = 'UR'
         if keys[pygame.K_DOWN] and keys[pygame.K_LEFT]:
             player.image = player.images[1]
+            met_dir = 'DL'
         if keys[pygame.K_DOWN] and keys[pygame.K_RIGHT]:
             player.image = player.images[7]
+            met_dir = 'DR'
+        if keys[pygame.K_SPACE]:
+            meteor = BasicSprite('meteor', (p_x - p_w * 2), (p_y - p_h), met_dir)
+            meteor.image = pygame.transform.scale(meteor.image, (20, 20))
+            meteors.add(meteor)
+            meteor_exists = True
 
         x = x * 5
         y = y * 5
@@ -249,7 +271,40 @@ def main(**kwargs):
         # The update function causes all 28 frames to play in succession, making the comet tail animation loop forever
         # The planet sprite must be re-scaled because the frame is changed depending on the direction
         comet.update()
+        for meteor in meteors:
+            meteor.update()
+            if meteor.direction == 'U':
+                meteor.rect.y -= 5
+            if meteor.direction == 'D':
+                meteor.rect.y += 5
+            if meteor.direction == 'L':
+                meteor.rect.x -= 5
+            if meteor.direction == 'R':
+                meteor.rect.x += 5
+            if meteor.direction == 'UL':
+                meteor.rect.y -= 5
+                meteor.rect.x -= 5
+            if meteor.direction == 'UR':
+                meteor.rect.y -= 5
+                meteor.rect.x += 5
+            if meteor.direction == 'DL':
+                meteor.rect.y += 5
+                meteor.rect.x -= 5
+            if meteor.direction == 'DR':
+                meteor.rect.y += 5
+                meteor.rect.x += 5
+            print(meteor.direction)
+
         player.image = pygame.transform.scale(player.image, (int(kwargs['player_start_x'], 10), int(kwargs['player_start_y'],10)))
+        for meteor in meteors:
+            meteor.image = pygame.transform.scale(meteor.image, (20, 20))
+
+        # Give all target sprites random movement
+        for target in targets:
+            rand_x = random.randrange(-4, 5)
+            rand_y = random.randrange(-4, 5)
+            target.rect.x += rand_x
+            target.rect.y += rand_y
 
         # If the player is hitting a world boundary, play all sprite frames in succession, to give the appearance of spinning
         # The images have to be re-scaled again, because the frame is changed
@@ -263,6 +318,8 @@ def main(**kwargs):
         screen.blit(BackGround.image, (0 - camX,0 - camY))
         screen.blit(comet.image,(((p_x - p_w * 2) - camX + com_X),((p_y - p_h) - camY + com_Y)))
         screen.blit(player.image,(p_x - camX,p_y - camY))
+        for meteor in meteors:
+            screen.blit(meteor.image,(meteor.rect.x - camX, meteor.rect.y - camY))
 
         for target in targets:
             screen.blit(target.image,(target.rect.x - camX, target.rect.y - camY))
