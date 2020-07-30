@@ -162,18 +162,26 @@ def main(**kwargs):
     pygame.mixer.music.load('bg.mp3')
     pygame.mixer.music.play(-1)
 
+    explode_sound = pygame.mixer.Sound('explode.WAV')
+    shoot_sound = pygame.mixer.Sound('shoot.WAV')
+
     # Game update. Run until the user asks to quit
     running = True
+
+    shootLoop = 0
     
     while running:
         # Reset the meteor flag each loop
-        meteor_exists = False
+        if shootLoop > 0:
+            shootLoop += 1
+        if shootLoop > 3:
+            shootLoop = 0
 
         # Reset the comet tail offset each loop
         com_X = 0
         com_Y = 0
 
-        met_dir = 'N'
+        met_dir = 'U'
         
         # Check to see if the quit button was pressed
         # If it is, break out of the game play loop
@@ -222,11 +230,13 @@ def main(**kwargs):
         if keys[pygame.K_DOWN] and keys[pygame.K_RIGHT]:
             player.image = player.images[7]
             met_dir = 'DR'
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE] and shootLoop == 0:
             meteor = BasicSprite('meteor', (p_x - p_w * 2), (p_y - p_h), met_dir)
-            meteor.image = pygame.transform.scale(meteor.image, (20, 20))
+            meteor.image = pygame.transform.scale(meteor.image, (30, 30))
             meteors.add(meteor)
-            meteor_exists = True
+            pygame.mixer.Sound.play(shoot_sound)
+            shootLoop = 1
+
 
         x = x * 5
         y = y * 5
@@ -297,7 +307,7 @@ def main(**kwargs):
 
         player.image = pygame.transform.scale(player.image, (int(kwargs['player_start_x'], 10), int(kwargs['player_start_y'],10)))
         for meteor in meteors:
-            meteor.image = pygame.transform.scale(meteor.image, (20, 20))
+            meteor.image = pygame.transform.scale(meteor.image, (30, 30))
 
         # Give all target sprites random movement
         for target in targets:
@@ -305,6 +315,14 @@ def main(**kwargs):
             rand_y = random.randrange(-4, 5)
             target.rect.x += rand_x
             target.rect.y += rand_y
+
+
+        # Check to see if a meteor hit a target
+        hits = pygame.sprite.groupcollide(targets, meteors, True, True)
+        for hit in hits:
+            e = BasicSprite('explosion', target.rect.x, target.rect.y)
+            pygame.mixer.Sound.play(explode_sound)
+            e.update()
 
         # If the player is hitting a world boundary, play all sprite frames in succession, to give the appearance of spinning
         # The images have to be re-scaled again, because the frame is changed
@@ -318,6 +336,7 @@ def main(**kwargs):
         screen.blit(BackGround.image, (0 - camX,0 - camY))
         screen.blit(comet.image,(((p_x - p_w * 2) - camX + com_X),((p_y - p_h) - camY + com_Y)))
         screen.blit(player.image,(p_x - camX,p_y - camY))
+
         for meteor in meteors:
             screen.blit(meteor.image,(meteor.rect.x - camX, meteor.rect.y - camY))
 
