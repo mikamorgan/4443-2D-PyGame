@@ -139,6 +139,7 @@ def main(**kwargs):
     # Create a group of target sprites (planets to hit)
     targets = pygame.sprite.Group()
     meteors = pygame.sprite.Group()
+    explosions = pygame.sprite.Group()
 
     for i in range (20):
         rand_x = randint(0,x * 5 - 100)
@@ -159,15 +160,14 @@ def main(**kwargs):
     screen = pygame.display.set_mode([x,y])
 
     # Load and play background music. -1 means loop forever
-    pygame.mixer.music.load('bg.mp3')
-    pygame.mixer.music.play(-1)
+    #pygame.mixer.music.load('bg.mp3')
+    #pygame.mixer.music.play(-1)
 
     explode_sound = pygame.mixer.Sound('explode.WAV')
     shoot_sound = pygame.mixer.Sound('shoot.WAV')
 
     # Game update. Run until the user asks to quit
     running = True
-
     shootLoop = 0
     
     while running:
@@ -231,7 +231,7 @@ def main(**kwargs):
             player.image = player.images[7]
             met_dir = 'DR'
         if keys[pygame.K_SPACE] and shootLoop == 0:
-            meteor = BasicSprite('meteor', (p_x - p_w * 2), (p_y - p_h), met_dir)
+            meteor = BasicSprite('meteor', p_x, p_y, met_dir)
             meteor.image = pygame.transform.scale(meteor.image, (30, 30))
             meteors.add(meteor)
             pygame.mixer.Sound.play(shoot_sound)
@@ -303,7 +303,10 @@ def main(**kwargs):
             if meteor.direction == 'DR':
                 meteor.rect.y += 5
                 meteor.rect.x += 5
-            print(meteor.direction)
+            if meteor.rect.x < 0 or meteor.rect.x > x * 5:
+                meteor.kill()
+            if meteor.rect.y < 0 or meteor.rect.y > y * 5:
+                meteor.kill()
 
         player.image = pygame.transform.scale(player.image, (int(kwargs['player_start_x'], 10), int(kwargs['player_start_y'],10)))
         for meteor in meteors:
@@ -316,13 +319,21 @@ def main(**kwargs):
             target.rect.x += rand_x
             target.rect.y += rand_y
 
+        for explosion in explosions:
+            explosion.update()
+            explosion.image = pygame.transform.scale(explosion.image, (50, 50))
+            if explosion.image == explosion.images[8]:
+                explosion.kill()
 
         # Check to see if a meteor hit a target
         hits = pygame.sprite.groupcollide(targets, meteors, True, True)
         for hit in hits:
-            e = BasicSprite('explosion', target.rect.x, target.rect.y)
             pygame.mixer.Sound.play(explode_sound)
-            e.update()
+            e = BasicSprite('explosion', meteor.rect.x, meteor.rect.y)
+            e.image = pygame.transform.scale(e.image, (50, 50))
+            explosions.add(e)
+
+
 
         # If the player is hitting a world boundary, play all sprite frames in succession, to give the appearance of spinning
         # The images have to be re-scaled again, because the frame is changed
@@ -342,6 +353,9 @@ def main(**kwargs):
 
         for target in targets:
             screen.blit(target.image,(target.rect.x - camX, target.rect.y - camY))
+
+        for explosion in explosions:
+            screen.blit(explosion.image,(explosion.rect.x - camX, explosion.rect.y - camY))
 
         ## If the player is hitting a world border, display a red border line
         if x_min: pygame.draw.rect(screen,RED,(x/2,(0-y/2),5,y * 5))
