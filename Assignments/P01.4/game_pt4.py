@@ -1,5 +1,6 @@
 # Import and initialize the pygame library
 import pygame, sys, os, glob
+from random import randint
 
 #P01.3  Mika Morgan
 
@@ -60,7 +61,7 @@ class Background(pygame.sprite.Sprite):
 # file path passed in as params. It includes functions to get a sprite's width and height, and play all
 # images in succession. This is used to loop the comet tail animation, and spin the player sprite
 class BasicSprite(pygame.sprite.Sprite):
-    def __init__(self, folder_name):
+    def __init__(self, folder_name, x, y):
         super(BasicSprite, self).__init__()
         self.images = []
         for image in glob.glob('./'+ folder_name +'/*.png'):
@@ -68,6 +69,9 @@ class BasicSprite(pygame.sprite.Sprite):
 
         self.index = 0
         self.image = self.images[self.index]
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
         
     def update(self):
         self.index += 1
@@ -110,7 +114,7 @@ def main(**kwargs):
     # Create a player using the file path passed in as a parameter
     # Set the initial size to the width and height passed in as parameters
     # Since the dictionary values are passed in as strings, convert them to ints in base 10 to use as size
-    player = BasicSprite(kwargs['img_path'])
+    player = BasicSprite(kwargs['img_path'], x / 2, y / 2)
     player.image = player.images[4]
     player.image = pygame.transform.scale(player.image, (int(kwargs['player_start_x'], 10), int(kwargs['player_start_y'],10)))
 
@@ -126,9 +130,24 @@ def main(**kwargs):
 
     # Create the comet tail animation sprite
     # Set the initial x and y offsets to 0
-    comet = BasicSprite('comet_tail')
+    comet = BasicSprite('comet_tail', p_x, p_y)
     com_X = 0
     com_Y = 0
+
+    # Create a group of target sprites (planets to hit)
+    targets = pygame.sprite.Group()
+
+    for i in range (20):
+        rand_x = randint(0,x * 5 - 100)
+        rand_y = randint(0,y * 5 - 100)
+        m = BasicSprite('target', rand_x, rand_y)
+        m.image = pygame.transform.scale(m.image, (80, 80))
+        targets.add(m)
+
+    # Spawn the targets in random locations
+    rand_x = randint(0,x - 100)
+    rand_y = randint(0,y - 100)
+
 
     # Set the window title to what was passed in as a parameter
     pygame.display.set_caption(kwargs['title'])
@@ -244,6 +263,9 @@ def main(**kwargs):
         screen.blit(BackGround.image, (0 - camX,0 - camY))
         screen.blit(comet.image,(((p_x - p_w * 2) - camX + com_X),((p_y - p_h) - camY + com_Y)))
         screen.blit(player.image,(p_x - camX,p_y - camY))
+
+        for target in targets:
+            screen.blit(target.image,(target.rect.x - camX, target.rect.y - camY))
 
         ## If the player is hitting a world border, display a red border line
         if x_min: pygame.draw.rect(screen,RED,(x/2,(0-y/2),5,y * 5))
