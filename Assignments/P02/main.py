@@ -18,7 +18,7 @@ from gameover import Gameover
 
 if __name__ == "__main__":
     pg.init()
-    screen = pg.display.set_mode((640, 480))
+    screen = pg.display.set_mode((800, 600))
     states = {"SPLASH": SplashScreen(),
               "MENU":   Menu(),
               "LEVEL_01": Level_01(),
