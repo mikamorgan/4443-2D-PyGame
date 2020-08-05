@@ -5,10 +5,10 @@ from state import State
 class Gameover(State):
     def __init__(self):
         super(Gameover, self).__init__()
-        self.title = self.font.render("Gameover", True, pg.Color("dodgerblue"))
+        self.title = self.font.render("Splash Screen", True, pg.Color("dodgerblue"))
         self.title_rect = self.title.get_rect(center=self.screen_rect.center)
         self.persist["screen_color"] = "black"
-        self.next_state = "GAMEPLAY"
+        self.next_state = "MENU"
         
     def get_event(self, event):
         if event.type == pg.QUIT:

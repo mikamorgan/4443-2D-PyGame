@@ -3,11 +3,13 @@ import pygame as pg
 
 from game import Game
 from state import State
-from game_state import Gameplay
 from splash_state import SplashScreen
+from menu import Menu
 from level_01 import Level_01
 from level_02 import Level_02
 from level_03 import Level_03
+from gameover import Gameover
+
 
 #########################
 #          Main         #
