@@ -10,20 +10,13 @@ class Level_01(State):
         
     def startup(self, persistent):
         self.persist = persistent
-        color = self.persist["screen_color"]
-        self.screen_color = pg.Color(color)
-        if color == "dodgerblue":
-            text = "You clicked the mouse to get here"
-        elif color == "gold":
-            text = "You pressed a key to get here"
-        self.title = self.font.render(text, True, pg.Color("gray10"))
-        self.title_rect = self.title.get_rect(center=self.screen_rect.center)
+
         
     def get_event(self, event):
         if event.type == pg.QUIT:
             self.quit = True
         elif event.type == pg.MOUSEBUTTONUP:
-            self.title_rect.center = event.pos
+            pass
         
     def update(self, dt):
         self.rect.move_ip(self.x_velocity, 0)
@@ -33,6 +26,6 @@ class Level_01(State):
             self.rect.clamp_ip(self.screen_rect)
                  
     def draw(self, surface):
-        surface.fill(self.screen_color)
-        surface.blit(self.title, self.title_rect)
+        #surface.fill(self.screen_color)
+        #surface.blit(self.title, self.title_rect)
         pg.draw.rect(surface, pg.Color("darkgreen"), self.rect)
