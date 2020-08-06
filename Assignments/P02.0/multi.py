@@ -1,3 +1,5 @@
+# pylint: disable=E1004
+
 import pygame
 import pygame.freetype
 import random
