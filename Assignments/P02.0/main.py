@@ -1,10 +1,14 @@
 import pygame as pg
 import random
-from .settings import *
-from .sprites import *
+from settings import *
+from sprites import Spritesheet
+from sprites import Platform
+from sprites import Player
+from sprites import Cloud
+from sprites import Pow
+from sprites import Mob
 from os import path
-import sys
-sys.path.insert(0, "./sprites.py")
+
 
 class Game:
     def __init__(self):
@@ -34,7 +38,7 @@ class Game:
         for i in range(1, 4):
             self.cloud_images.append(pg.image.load(path.join(img_dir, 'cloud{}.png'.format(i))).convert())
         # load sounds
-        #self.snd_dir = path.join(self.dir, 'snd')
+        self.snd_dir = path.join(self.dir, 'snd')
         #self.jump_sound = pg.mixer.Sound(path.join(self.snd_dir, 'Jump33.wav'))
         #self.boost_sound = pg.mixer.Sound(path.join(self.snd_dir, 'Boost16.wav'))
 
@@ -58,14 +62,14 @@ class Game:
 
     def run(self):
         # Game Loop
-        pg.mixer.music.play(loops=-1)
+        #pg.mixer.music.play(loops=-1)
         self.playing = True
         while self.playing:
             self.clock.tick(FPS)
             self.events()
             self.update()
             self.draw()
-        pg.mixer.music.fadeout(500)
+        #pg.mixer.music.fadeout(500)
 
     def update(self):
         # Game Loop - Update
@@ -159,13 +163,14 @@ class Game:
 
     def show_start_screen(self):
         # game splash/start screen
-        #pg.mixer.music.load(path.join(self.snd_dir, 'Yippee.ogg'))
+        pg.mixer.music.load(path.join(self.snd_dir, 'bg.mp3'))
         pg.mixer.music.play(loops=-1)
-        self.screen.fill(BGCOLOR)
-        self.draw_text(TITLE, 48, WHITE, WIDTH / 2, HEIGHT / 4)
-        self.draw_text("Arrows to move, Space to jump", 22, WHITE, WIDTH / 2, HEIGHT / 2)
-        self.draw_text("Press a key to play", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
-        self.draw_text("High Score: " + str(self.highscore), 22, WHITE, WIDTH / 2, 15)
+
+        img_dir = path.join(self.dir, 'img')
+        bg = pg.image.load(path.join(img_dir, 'splash.jpg'))
+        bg = pg.transform.scale(bg,(WIDTH,HEIGHT))
+        self.screen.blit(bg, (0,0))
+
         pg.display.flip()
         self.wait_for_key()
         pg.mixer.music.fadeout(500)
@@ -175,9 +180,13 @@ class Game:
         if not self.running:
             return
         #pg.mixer.music.load(path.join(self.snd_dir, 'Yippee.ogg'))
-        pg.mixer.music.play(loops=-1)
-        self.screen.fill(BGCOLOR)
-        self.draw_text("GAME OVER", 48, WHITE, WIDTH / 2, HEIGHT / 4)
+        #pg.mixer.music.play(loops=-1)
+        
+        img_dir = path.join(self.dir, 'img')
+        bg = pg.image.load(path.join(img_dir, 'game_over.jpg'))
+        bg = pg.transform.scale(bg,(WIDTH,HEIGHT))
+        self.screen.blit(bg, (0,0))
+
         self.draw_text("Score: " + str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2)
         self.draw_text("Press a key to play again", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
         if self.score > self.highscore:
