@@ -1,5 +1,5 @@
 # game options/settings
-TITLE = "Jumpy!"
+TITLE = "ADVENTURE GAME!"
 WIDTH = 840
 HEIGHT = 600
 FPS = 60
