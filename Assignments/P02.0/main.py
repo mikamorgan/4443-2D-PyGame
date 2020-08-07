@@ -7,6 +7,8 @@ from sprites import Player
 from sprites import Cloud
 from sprites import Pow
 from sprites import Mob
+from sprites import Portal
+from sprites import Shortcut
 from os import path
 
 
@@ -41,16 +43,28 @@ class Game:
         self.snd_dir = path.join(self.dir, 'snd')
         self.jump_sound = pg.mixer.Sound(path.join(self.snd_dir, 'hop.wav'))
         self.boost_sound = pg.mixer.Sound(path.join(self.snd_dir, 'carrot.wav'))
+        self.portal_sound = pg.mixer.Sound(path.join(self.snd_dir, 'portal.wav'))
+        self.game_over_sound = pg.mixer.Sound(path.join(self.snd_dir, 'game_over.wav'))
 
     def new(self, level):
         # start a new game
+        if level == 0:
+            self.playing = False
+            g.show_go_screen()
+
         self.score = 0
         self.all_sprites = pg.sprite.LayeredUpdates()
         self.platforms = pg.sprite.Group()
         self.powerups = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         self.clouds = pg.sprite.Group()
+        self.portal = pg.sprite.Group()
+        self.shortcut = pg.sprite.Group()
         self.player = Player(self)
+
+        pg.mixer.music.load(path.join(self.snd_dir, 'gameplay.mp3'))
+        pg.mixer.music.set_volume(.3)
+        pg.mixer.music.play(loops=-1)
 
         if level == 1:
             for plat in PLATFORM_LIST_1:
@@ -61,8 +75,12 @@ class Game:
         if level == 3:
             for plat in PLATFORM_LIST_3:
                 Platform(self, *plat)
+
+        Portal(self)
+        Shortcut(self)
+
         self.mob_timer = 0
-        #pg.mixer.music.load(path.join(self.snd_dir, 'Happy Tune.ogg'))
+
         for i in range(8):
             c = Cloud(self)
             c.rect.y += 500
@@ -83,15 +101,29 @@ class Game:
         # Game Loop - Update
         self.all_sprites.update()
 
+        for cloud in self.shortcut:
+            cloud.rect.x += 1
+            
         # spawn a mob?
         now = pg.time.get_ticks()
         if now - self.mob_timer > 5000 + random.choice([-1000, -500, 0, 500, 1000]):
             self.mob_timer = now
             Mob(self)
+
         # hit mobs?
         mob_hits = pg.sprite.spritecollide(self.player, self.mobs, False, pg.sprite.collide_mask)
         if mob_hits:
             self.playing = False
+            level = 0
+            pg.mixer.music.fadeout(500)
+            g.show_go_screen()
+
+
+        portal_collide = pg.sprite.spritecollide(self.player, self.portal, True)
+        if portal_collide:
+            self.playing = False
+            self.portal_sound.play()
+
 
         # check if player hits a platform - only if falling
         if self.player.vel.y > 0:
@@ -123,6 +155,10 @@ class Game:
                     sprite.kill()
         if len(self.platforms) == 0:
             self.playing = False
+            level = 0
+            pg.mixer.music.fadeout(500)
+            g.show_go_screen()
+            
 
 
     def events(self):
@@ -142,7 +178,6 @@ class Game:
 
     def draw(self, level):
         # Game Loop - draw
-        #self.screen.fill(BGCOLOR)
         img_dir = path.join(self.dir, 'img')
         if level == 1:
             bg = pg.image.load(path.join(img_dir, 'level_1.jpg'))
@@ -209,8 +244,8 @@ class Game:
             self.screen.blit(bg, (0,0))
             self.screen.blit(title_img, (210, 100))
 
-            self.draw_text("ARROW KEYS to move, SPACEBAR to jump", 30, GREY, WIDTH / 2, 400)
-            self.draw_text("Press any key to play", 30, GREY, WIDTH / 2, 450)
+            self.draw_text("ARROW KEYS to move, SPACEBAR to jump", 30, GREY, WIDTH / 2, 420)
+            self.draw_text("Press any key to play", 30, GREY, WIDTH / 2, 480)
             self.draw_text("High Score: " + str(self.highscore), 30, GREY, WIDTH / 2, 30)
             self.screen.blit(cloud, (x,y))
             self.screen.blit(cloud, (WIDTH - x,y2))
@@ -229,28 +264,27 @@ class Game:
 
     def show_go_screen(self):
         # game over/continue
-        if not self.running:
-            return
-        #pg.mixer.music.load(path.join(self.snd_dir, 'Yippee.ogg'))
-        #pg.mixer.music.play(loops=-1)
-        
+        #if not self.running:
+        #    return
+        self.game_over_sound.play()
+
         img_dir = path.join(self.dir, 'img')
         bg = pg.image.load(path.join(img_dir, 'game_over.jpg'))
         bg = pg.transform.scale(bg,(WIDTH,HEIGHT))
         self.screen.blit(bg, (0,0))
 
-        self.draw_text("Score: " + str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2)
-        self.draw_text("Press a key to play again", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
+        self.draw_text("Score: " + str(self.score), 50, WHITE, WIDTH / 2, HEIGHT / 2 + 150)
         if self.score > self.highscore:
             self.highscore = self.score
-            self.draw_text("NEW HIGH SCORE!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+            self.draw_text("NEW HIGH SCORE!", 50, WHITE, WIDTH / 2, HEIGHT / 2 - 100)
             with open(path.join(self.dir, HS_FILE), 'w') as f:
                 f.write(str(self.score))
         else:
-            self.draw_text("High Score: " + str(self.highscore), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+            self.draw_text("High Score: " + str(self.highscore), 50, WHITE, WIDTH / 2, HEIGHT / 2 - 250)
         pg.display.flip()
+
         self.wait_for_key()
-        pg.mixer.music.fadeout(500)
+        self.running = False
 
     def wait_for_key(self):
         waiting = True
@@ -282,6 +316,5 @@ while g.running:
     g.new(level)
     level += 1
     g.new(level)
-    g.show_go_screen()
 
 pg.quit()

@@ -1,7 +1,8 @@
 # Sprite classes for platform game
 import pygame as pg
 from settings import *
-from random import choice, randrange
+from os import path
+from random import choice, randrange, randint
 vec = pg.math.Vector2
 
 class Spritesheet:
@@ -35,17 +36,17 @@ class Player(pg.sprite.Sprite):
         self.acc = vec(0, 0)
 
     def load_images(self):
-        self.standing_frames = [self.game.spritesheet.get_image(614, 1063, 120, 191),
-                                self.game.spritesheet.get_image(690, 406, 120, 201)]
+        self.standing_frames = [self.game.spritesheet.get_image(581, 1265, 121, 191),
+                                self.game.spritesheet.get_image(584, 0, 121, 201)]
         for frame in self.standing_frames:
             frame.set_colorkey(BLACK)
-        self.walk_frames_r = [self.game.spritesheet.get_image(678, 860, 120, 201),
-                              self.game.spritesheet.get_image(692, 1458, 120, 207)]
+        self.walk_frames_r = [self.game.spritesheet.get_image(584, 203, 121, 201),
+                              self.game.spritesheet.get_image(678, 651, 121, 207)]
         self.walk_frames_l = []
         for frame in self.walk_frames_r:
             frame.set_colorkey(BLACK)
             self.walk_frames_l.append(pg.transform.flip(frame, True, False))
-        self.jump_frame = self.game.spritesheet.get_image(382, 763, 150, 181)
+        self.jump_frame = self.game.spritesheet.get_image(416, 1660, 150, 181)
         self.jump_frame.set_colorkey(BLACK)
 
     def jump_cut(self):
@@ -150,6 +151,33 @@ class Platform(pg.sprite.Sprite):
         self.rect.y = y
         if randrange(100) < POW_SPAWN_PCT:
             Pow(self.game, self)
+
+class Portal(pg.sprite.Sprite):
+    def __init__(self, game):
+        self._layer = PLAYER_LAYER
+        self.groups = game.all_sprites, game.portal
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = self.game.spritesheet.get_image(0, 1372, 230, 82)
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()
+        self.rect.x = 1050
+        self.rect.y = 600
+
+class Shortcut(pg.sprite.Sprite):
+    def __init__(self, game):
+        #img_dir = path.join(self.dir, 'img')
+        self._layer = PLAYER_LAYER
+        self.groups = game.all_sprites, game.shortcut
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = pg.image.load('./img/cloud1.png')
+        self.image.set_colorkey(BLACK)
+        x = 0
+        y = randint(0, HEIGHT / 2)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
 
 class Pow(pg.sprite.Sprite):
     def __init__(self, game, plat):
