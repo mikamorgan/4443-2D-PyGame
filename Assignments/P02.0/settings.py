@@ -9,9 +9,9 @@ SPRITESHEET = "spritesheet_jumper.png"
 
 # Player properties
 PLAYER_ACC = 0.5
-PLAYER_FRICTION = -0.12
+PLAYER_FRICTION = -0.1
 PLAYER_GRAV = 0.8
-PLAYER_JUMP = 20
+PLAYER_JUMP = 19
 
 # Game properties
 BOOST_POWER = 60
@@ -50,6 +50,8 @@ PLATFORM_LIST_3 = [(0, HEIGHT - 60),
                  (10, 440),
                  (20, 240),
                  (300, HEIGHT - 50),
+                 (600, 300),
+                 (700, 700),
                  (820, 420),
                  (920, 450),
                  (1000, HEIGHT - 60),

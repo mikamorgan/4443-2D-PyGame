@@ -48,7 +48,7 @@ class Game:
 
     def new(self, level):
         # start a new game
-        if level == 0:
+        if level == 5:
             self.playing = False
             g.show_go_screen()
 
@@ -102,8 +102,8 @@ class Game:
         self.all_sprites.update()
 
         for cloud in self.shortcut:
-            cloud.rect.x += 1
-            
+            cloud.rect.x += 2
+
         # spawn a mob?
         now = pg.time.get_ticks()
         if now - self.mob_timer > 5000 + random.choice([-1000, -500, 0, 500, 1000]):
@@ -114,7 +114,7 @@ class Game:
         mob_hits = pg.sprite.spritecollide(self.player, self.mobs, False, pg.sprite.collide_mask)
         if mob_hits:
             self.playing = False
-            level = 0
+            level = 5
             pg.mixer.music.fadeout(500)
             g.show_go_screen()
 
@@ -140,6 +140,15 @@ class Game:
                         self.player.vel.y = 0
                         self.player.jumping = False
 
+            ride = pg.sprite.spritecollide(self.player, self.shortcut, False)
+            if ride:
+                for cloud in ride:
+                    cloud.rect.y += .5
+                    self.player.pos.x = cloud.rect.x + 30
+                    self.player.pos.y = cloud.rect.y + 20
+                    self.player.vel.y = 0
+                    self.player.jumping = False
+
 
         # if player collects a carrot
         pow_hits = pg.sprite.spritecollide(self.player, self.powerups, True)
@@ -155,7 +164,7 @@ class Game:
                     sprite.kill()
         if len(self.platforms) == 0:
             self.playing = False
-            level = 0
+            level = 5
             pg.mixer.music.fadeout(500)
             g.show_go_screen()
             
@@ -245,7 +254,8 @@ class Game:
             self.screen.blit(title_img, (210, 100))
 
             self.draw_text("ARROW KEYS to move, SPACEBAR to jump", 30, GREY, WIDTH / 2, 420)
-            self.draw_text("Press any key to play", 30, GREY, WIDTH / 2, 480)
+            self.draw_text("Collect carrots to score. Avoid the grumpy clouds!", 30, GREY, WIDTH / 2, 480)
+            self.draw_text("Press any key to play", 30, GREY, WIDTH / 2, 515)
             self.draw_text("High Score: " + str(self.highscore), 30, GREY, WIDTH / 2, 30)
             self.screen.blit(cloud, (x,y))
             self.screen.blit(cloud, (WIDTH - x,y2))
@@ -317,4 +327,5 @@ while g.running:
     level += 1
     g.new(level)
 
+g.show_go_screen()
 pg.quit()

@@ -55,11 +55,12 @@ class Player(pg.sprite.Sprite):
                 self.vel.y = -3
 
     def jump(self):
-        # jump only if standing on a platform
+        # jump only if standing on a platform or riding the cloud
         self.rect.y += 2
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
+        ride = pg.sprite.spritecollide(self, self.game.shortcut, False)
         self.rect.y -= 2
-        if hits and not self.jumping:
+        if (hits or ride) and not self.jumping:
             self.game.jump_sound.play()
             self.jumping = True
             self.vel.y = -PLAYER_JUMP
