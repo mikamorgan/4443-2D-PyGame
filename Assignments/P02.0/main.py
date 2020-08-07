@@ -212,6 +212,7 @@ class Game:
                 if event.type == pg.KEYUP:
                     waiting = False
 
+
     def show_menu_screen(self):
         img_dir = path.join(self.dir, 'img')
         bg = pg.image.load(path.join(img_dir, 'bg.jpg'))
@@ -227,11 +228,11 @@ class Game:
         while waiting:
             self.clock.tick(FPS)
             self.screen.blit(bg, (0,0))
-            self.screen.blit(title_img, (30, 50))
+            self.screen.blit(title_img, (210, 100))
 
-            self.draw_text("ARROW KEYS to move, SPACEBAR to jump", 30, GREY, WIDTH / 2, 370)
-            self.draw_text("Press any key to play", 30, GREY, WIDTH / 2, 420)
-            self.draw_text("High Score: " + str(self.highscore), 30, GREY, WIDTH / 2, 15)
+            self.draw_text("ARROW KEYS to move, SPACEBAR to jump", 30, GREY, WIDTH / 2, 400)
+            self.draw_text("Press any key to play", 30, GREY, WIDTH / 2, 450)
+            self.draw_text("High Score: " + str(self.highscore), 30, GREY, WIDTH / 2, 30)
             self.screen.blit(cloud, (x,y))
             self.screen.blit(cloud, (WIDTH - x,y2))
             pg.display.flip()
