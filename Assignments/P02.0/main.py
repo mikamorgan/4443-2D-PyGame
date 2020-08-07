@@ -66,9 +66,9 @@ class Game:
         for i in range(8):
             c = Cloud(self)
             c.rect.y += 500
-        self.run()
+        self.run(level)
 
-    def run(self):
+    def run(self, level):
         # Game Loop
         #pg.mixer.music.play(loops=-1)
         self.playing = True
@@ -76,7 +76,7 @@ class Game:
             self.clock.tick(FPS)
             self.events()
             self.update()
-            self.draw()
+            self.draw(level)
         #pg.mixer.music.fadeout(500)
 
     def update(self):
@@ -161,9 +161,23 @@ class Game:
                 if event.key == pg.K_SPACE:
                     self.player.jump_cut()
 
-    def draw(self):
+    def draw(self, level):
         # Game Loop - draw
-        self.screen.fill(BGCOLOR)
+        #self.screen.fill(BGCOLOR)
+        img_dir = path.join(self.dir, 'img')
+        if level == 1:
+            bg = pg.image.load(path.join(img_dir, 'level_1.jpg'))
+            bg = pg.transform.scale(bg,(WIDTH,HEIGHT))
+            self.screen.blit(bg, (0,0))
+        elif level == 2:
+            bg = pg.image.load(path.join(img_dir, 'level_2.jpg'))
+            bg = pg.transform.scale(bg,(WIDTH,HEIGHT))
+            self.screen.blit(bg, (0,0))
+        elif level == 3:
+            bg = pg.image.load(path.join(img_dir, 'level_3.jpg'))
+            bg = pg.transform.scale(bg,(WIDTH,HEIGHT))
+            self.screen.blit(bg, (0,0))
+
         self.all_sprites.draw(self.screen)
         self.draw_text(str(self.score), 22, WHITE, WIDTH / 2, 15)
         # *after* drawing everything, flip the display

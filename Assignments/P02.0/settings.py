@@ -1,7 +1,7 @@
 # game options/settings
 TITLE = "ADVENTURE GAME!"
-WIDTH = 840
-HEIGHT = 600
+WIDTH = 1200
+HEIGHT = 670
 FPS = 60
 FONT_NAME = 'arial'
 HS_FILE = "highscore.txt"
