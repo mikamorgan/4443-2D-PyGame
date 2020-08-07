@@ -59,7 +59,7 @@ class Player(pg.sprite.Sprite):
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
         self.rect.y -= 2
         if hits and not self.jumping:
-            #self.game.jump_sound.play()
+            self.game.jump_sound.play()
             self.jumping = True
             self.vel.y = -PLAYER_JUMP
 
@@ -159,7 +159,7 @@ class Pow(pg.sprite.Sprite):
         self.game = game
         self.plat = plat
         self.type = choice(['boost'])
-        self.image = self.game.spritesheet.get_image(820, 1805, 71, 70)
+        self.image = self.game.spritesheet.get_image(820, 1733, 78, 70)
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.centerx = self.plat.rect.centerx

@@ -39,8 +39,8 @@ class Game:
             self.cloud_images.append(pg.image.load(path.join(img_dir, 'cloud{}.png'.format(i))).convert())
         # load sounds
         self.snd_dir = path.join(self.dir, 'snd')
-        #self.jump_sound = pg.mixer.Sound(path.join(self.snd_dir, 'Jump33.wav'))
-        #self.boost_sound = pg.mixer.Sound(path.join(self.snd_dir, 'Boost16.wav'))
+        self.jump_sound = pg.mixer.Sound(path.join(self.snd_dir, 'hop.wav'))
+        self.boost_sound = pg.mixer.Sound(path.join(self.snd_dir, 'carrot.wav'))
 
     def new(self, level):
         # start a new game
@@ -108,28 +108,12 @@ class Game:
                         self.player.vel.y = 0
                         self.player.jumping = False
 
-        # if player reaches top 1/4 of screen
-        if self.player.rect.top <= HEIGHT / 4:
-            if random.randrange(100) < 15:
-                Cloud(self)
-            self.player.pos.y += max(abs(self.player.vel.y), 2)
-            for cloud in self.clouds:
-                cloud.rect.y += max(abs(self.player.vel.y / 2), 2)
-            for mob in self.mobs:
-                mob.rect.y += max(abs(self.player.vel.y), 2)
-            for plat in self.platforms:
-                plat.rect.y += max(abs(self.player.vel.y), 2)
-                if plat.rect.top >= HEIGHT:
-                    plat.kill()
-                    self.score += 10
 
-        # if player hits powerup
+        # if player collects a carrot
         pow_hits = pg.sprite.spritecollide(self.player, self.powerups, True)
         for pow1 in pow_hits:
-            if pow1.type == 'boost':
-                #self.boost_sound.play()
-                self.player.vel.y = -BOOST_POWER
-                self.player.jumping = False
+            self.boost_sound.play()
+            self.score += 1
 
         # Die!
         if self.player.rect.bottom > HEIGHT:
@@ -140,11 +124,6 @@ class Game:
         if len(self.platforms) == 0:
             self.playing = False
 
-        # spawn new platforms to keep same average number
-        while len(self.platforms) < 6:
-            width = random.randrange(50, 100)
-            Platform(self, random.randrange(0, WIDTH - width),
-                     random.randrange(-75, -30))
 
     def events(self):
         # Game Loop - events
