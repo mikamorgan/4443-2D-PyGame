@@ -42,7 +42,7 @@ class Game:
         #self.jump_sound = pg.mixer.Sound(path.join(self.snd_dir, 'Jump33.wav'))
         #self.boost_sound = pg.mixer.Sound(path.join(self.snd_dir, 'Boost16.wav'))
 
-    def new(self):
+    def new(self, level):
         # start a new game
         self.score = 0
         self.all_sprites = pg.sprite.LayeredUpdates()
@@ -51,8 +51,16 @@ class Game:
         self.mobs = pg.sprite.Group()
         self.clouds = pg.sprite.Group()
         self.player = Player(self)
-        for plat in PLATFORM_LIST:
-            Platform(self, *plat)
+
+        if level == 1:
+            for plat in PLATFORM_LIST_1:
+                Platform(self, *plat)
+        if level == 2:
+            for plat in PLATFORM_LIST_2:
+                Platform(self, *plat)
+        if level == 3:
+            for plat in PLATFORM_LIST_3:
+                Platform(self, *plat)
         self.mob_timer = 0
         #pg.mixer.music.load(path.join(self.snd_dir, 'Happy Tune.ogg'))
         for i in range(8):
@@ -273,8 +281,13 @@ class Game:
 g = Game()
 g.show_start_screen()
 g.show_menu_screen()
+level = 1
 while g.running:
-    g.new()
+    g.new(level)
+    level += 1
+    g.new(level)
+    level += 1
+    g.new(level)
     g.show_go_screen()
 
 pg.quit()

@@ -24,12 +24,23 @@ MOB_LAYER = 2
 CLOUD_LAYER = 0
 
 # Starting platforms
-PLATFORM_LIST = [(0, HEIGHT - 60),
+PLATFORM_LIST_1 = [(0, HEIGHT - 60),
                  (WIDTH / 2 - 50, HEIGHT * 3 / 4 - 50),
                  (125, HEIGHT - 350),
                  (350, 200),
                  (175, 100)]
 
+PLATFORM_LIST_2 = [(0, HEIGHT - 60),
+                 (WIDTH / 2 - 50, HEIGHT * 3 / 4 - 50),
+                 (125, HEIGHT - 150),
+                 (50, 200),
+                 (175, 100)]
+
+PLATFORM_LIST_3 = [(0, HEIGHT - 60),
+                 (WIDTH / 2 - 50, HEIGHT * 3 / 4 - 50),
+                 (125, HEIGHT / 2),
+                 (350, 300),
+                 (275, 125)]
 # define colors
 WHITE = (255, 255, 255)
 GREY = (127, 127, 127)
