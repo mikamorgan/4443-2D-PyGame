@@ -170,9 +170,59 @@ class Game:
         bg = pg.image.load(path.join(img_dir, 'splash.jpg'))
         bg = pg.transform.scale(bg,(WIDTH,HEIGHT))
         self.screen.blit(bg, (0,0))
+        
+        waiting = True
+        cloud = pg.image.load(path.join(img_dir, 'cloud1.png'))
+        x = 0
+        y = random.randint(0, HEIGHT / 2)
 
+        while waiting:
+            self.clock.tick(FPS)
+            self.screen.blit(bg, (0,0))
+            self.screen.blit(cloud, (x,y))
+            pg.display.flip()
+
+            x += 1
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    waiting = False
+                    self.running = False
+                if event.type == pg.KEYUP:
+                    waiting = False
+
+    def show_menu_screen(self):
+        img_dir = path.join(self.dir, 'img')
+        bg = pg.image.load(path.join(img_dir, 'bg.jpg'))
+        bg = pg.transform.scale(bg,(WIDTH,HEIGHT))
+        self.screen.blit(bg, (0,0))
+
+        title_img = pg.image.load(path.join(img_dir, 'game_title.png'))       
+        cloud = pg.image.load(path.join(img_dir, 'cloud1.png'))
+        x = 0
+        y = random.randint(0, HEIGHT / 2) 
+        y2 = random.randint(0, HEIGHT / 2)
+        waiting = True
+        while waiting:
+            self.clock.tick(FPS)
+            self.screen.blit(bg, (0,0))
+            self.screen.blit(title_img, (30, 50))
+
+            self.draw_text("ARROW KEYS to move, SPACEBAR to jump", 30, GREY, WIDTH / 2, 370)
+            self.draw_text("Press any key to play", 30, GREY, WIDTH / 2, 420)
+            self.draw_text("High Score: " + str(self.highscore), 30, GREY, WIDTH / 2, 15)
+            self.screen.blit(cloud, (x,y))
+            self.screen.blit(cloud, (WIDTH - x,y2))
+            pg.display.flip()
+            x += 1
+
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    waiting = False
+                    self.running = False
+                if event.type == pg.KEYUP:
+                    waiting = False
+        
         pg.display.flip()
-        self.wait_for_key()
         pg.mixer.music.fadeout(500)
 
     def show_go_screen(self):
@@ -202,8 +252,10 @@ class Game:
 
     def wait_for_key(self):
         waiting = True
+
         while waiting:
             self.clock.tick(FPS)
+        
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     waiting = False
@@ -220,6 +272,7 @@ class Game:
 
 g = Game()
 g.show_start_screen()
+g.show_menu_screen()
 while g.running:
     g.new()
     g.show_go_screen()
